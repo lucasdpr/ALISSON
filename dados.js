@@ -212,4 +212,21 @@ const CAPITULOS = [
     ],
     fotos: [],
   },
+  {
+    titulo: "Hoje",
+    ano: null,
+    frase: "",
+    layout: "carrossel",
+    videos: ["hoje.mp4"],
+    fotos: [
+      "hoje-01.jpg",
+      "hoje-02.jpg",
+      "hoje-03.jpg",
+      "hoje-04.jpg",
+      "hoje-05.jpg",
+      "hoje-06.jpg",
+      "hoje-07.jpg",
+      "hoje-08.jpg",
+    ],
+  },
 ];
