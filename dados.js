@@ -232,9 +232,33 @@ const CAPITULOS = [
       "hoje-03.jpg",
       "hoje-04.jpg",
       "hoje-05.jpg",
-      "hoje-06.jpg",
       "hoje-07.jpg",
       "hoje-08.jpg",
     ],
   },
 ];
+
+// ============================================================
+//  GRANDE FINAL — aniversário
+// ============================================================
+const ANIVERSARIO = {
+  foto: "aniversario.jpg",
+  horizonte: 0.53,          // altura da linha do mar na foto (0 = topo, 1 = base): os fogos sobem dali
+  fogosEscrevem: ["Alisson", "Te amo", "Parabéns!"],   // frases que os fogos escrevem no céu, em sequência
+  assinatura: "Erica",
+  mensagem: `Hoje é o seu dia, meu amor! ❤️
+
+E eu não poderia deixar de agradecer a Deus pela sua vida e por mais um ano que Ele te concede.
+
+São 16 anos de história, tantos momentos vividos, sonhos construídos, desafios enfrentados e tantas lembranças que carregamos juntos. Quando olho para a nossa caminhada, vejo que o nosso amor é feito de muito mais do que momentos felizes: é feito de parceria, escolhas diárias, amadurecimento e vontade de continuar caminhando lado a lado.
+
+Que Deus continue guiando seus passos, abençoando seus planos, renovando suas forças e realizando os desejos do seu coração. Que nunca faltem saúde, sabedoria, paz e motivos para sorrir.
+
+Eu desejo que a vida seja generosa com você, que seus sonhos floresçam e que você nunca se esqueça do quanto é amado.
+
+Obrigada por dividir a vida comigo, por nossa família, por nossa história e por tudo o que ainda vamos viver.
+
+Feliz aniversário, meu amor! Que venham muitos outros anos, muitas conquistas e novas histórias para escrevermos juntos.
+
+Eu escolheria você em tantas outras vidas. Te amo! ♥️♥️♥️`,
+};

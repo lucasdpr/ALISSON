@@ -127,3 +127,51 @@ dialog button{position:absolute;top:-2.4rem;right:0;background:none;border:0;col
 .video-box.final{width:min(340px,80vw);margin:0 auto 2.5rem;overflow:visible;box-shadow:none}
 .video-box.final .video-wrap{border-radius:14px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.55)}
 .dica-som{font:500 1.3rem Caveat,cursive;opacity:.8;margin:.6rem 0 0}
+
+/* ---------- grande final: aniversário ---------- */
+.aniversario{position:relative;min-height:100svh;padding:0 16px 10vh;background:radial-gradient(ellipse at 50% 0%,#2a0f3a 0%,#120d0b 70%);overflow:hidden;cursor:crosshair}
+#fogos{position:sticky;top:0;display:block;width:100%;height:100svh;margin-bottom:-100svh;pointer-events:none;z-index:0}
+.aniv-conteudo{position:relative;z-index:1;max-width:720px;margin:0 auto;text-align:center}
+.aniv-titulo{margin:0;opacity:0;transform:scale(.6);transition:opacity 1s,transform 1.2s cubic-bezier(.2,1.6,.4,1)}
+.aniv-titulo.vis{opacity:1;transform:none}
+.aniv-titulo .arco{display:inline-block;font:400 clamp(2.5rem,10.5vw,5.5rem)/1.1 Lobster,cursive;white-space:nowrap;
+  background:linear-gradient(90deg,#ff3b6b,#ffd23f,#5bff8a,#3bf7ff,#a66bff,#ff5ef1,#ff3b6b);background-size:300% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;animation:arcoiris 4s linear infinite;
+  filter:drop-shadow(0 0 18px rgba(255,210,63,.5))}
+.aniv-titulo small{display:block;font:700 clamp(1.8rem,6vw,2.8rem) Caveat,cursive;color:#ffd23f;margin-top:.3rem}
+@keyframes arcoiris{to{background-position:300% 0}}
+.aniv-foto-box{position:relative;width:min(440px,88vw);margin:0 auto 3rem;padding:12px;border-radius:20px;
+  background:linear-gradient(135deg,#ffd23f,#ff3b6b,#a66bff,#3bf7ff,#ffd23f);background-size:300% 300%;animation:arcoiris 5s linear infinite;
+  box-shadow:0 0 60px rgba(255,210,63,.45),0 0 120px rgba(255,59,107,.3);opacity:0;transform:translateY(60px) rotate(-3deg);transition:1.2s cubic-bezier(.2,.9,.25,1.2)}
+.aniv-foto-box.vis{opacity:1;transform:rotate(-1.5deg)}
+.aniv-foto-box img{width:100%;border-radius:12px;display:block;cursor:zoom-in}
+.aniv-foto-box::after{content:"🎂";position:absolute;right:-18px;top:-26px;font-size:3.2rem;animation:balanca 2s ease-in-out infinite}
+.aniv-foto-box::before{content:"🎉";position:absolute;left:-22px;bottom:-20px;font-size:3rem;animation:balanca 2.4s ease-in-out infinite reverse;z-index:2}
+@keyframes balanca{50%{transform:rotate(14deg) scale(1.1)}}
+.carta{background:rgba(255,253,248,.96);color:#3a2a22;border-radius:6px;padding:clamp(1.6rem,5vw,3rem);text-align:left;
+  box-shadow:0 30px 60px rgba(0,0,0,.5);position:relative;
+  background-image:repeating-linear-gradient(transparent 0 33px,rgba(180,80,60,.12) 33px 34px)}
+.carta::before{content:"💌";position:absolute;top:-28px;left:50%;transform:translateX(-50%);font-size:3rem}
+#carta-texto p{font:500 clamp(1.25rem,3.6vw,1.55rem)/1.45 Caveat,cursive;margin:0 0 1rem;opacity:0;transform:translateY(16px);transition:opacity .9s ease,transform .9s ease}
+#carta-texto p.vis{opacity:1;transform:none}
+#carta-texto p.abre{font:700 clamp(1.7rem,5vw,2.2rem)/1.2 Caveat,cursive;color:#c0392b;text-align:center}
+#carta-texto p:last-child{font-weight:700;color:#c0392b}
+.assinatura-carta{font:400 clamp(1.8rem,5vw,2.4rem) Lobster,cursive;color:#c0392b;text-align:right;margin:1.5rem 0 0;opacity:0;transition:opacity 1.2s ease .3s}
+.assinatura-carta.vis{opacity:1}
+.toque-fogos{font:500 1.2rem Caveat,cursive;opacity:.6;margin-top:2rem}
+@media (prefers-reduced-motion:reduce){
+  .aniv-titulo,.aniv-foto-box,#carta-texto p,.assinatura-carta{opacity:1!important;transform:none!important}
+  .aniv-titulo span,.aniv-foto-box{animation:none!important}
+  .toque-fogos{display:none}
+}
+
+.ceu{position:relative;z-index:1;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:space-between;text-align:center;padding:9vh 0 7vh}
+.aniv-titulo .brilho{display:inline-block;font-size:clamp(1.6rem,6vw,3.2rem);vertical-align:middle;margin:0 .15em;animation:balanca 1.6s ease-in-out infinite}
+.aniv-titulo .brilho:last-of-type{animation-direction:reverse}
+.olhe{font:500 1.4rem Caveat,cursive;color:#ffd23f;opacity:.8;margin:0;animation:flutua 2.4s ease-in-out infinite}
+.som-fogos{margin-top:.8rem;background:rgba(255,255,255,.08);border:1px solid rgba(255,210,63,.5);color:#ffd23f;padding:.55rem 1.1rem;border-radius:99px;font:600 .95rem Inter,sans-serif;cursor:pointer;backdrop-filter:blur(4px)}
+.som-fogos[aria-pressed="true"]{background:#ffd23f;color:#2a0f3a}
+@media (prefers-reduced-motion:reduce){.olhe,.aniv-titulo .brilho{animation:none!important}}
+.aniv-foto-wrap{position:relative;border-radius:12px;overflow:hidden}
+#fogos-foto{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;mix-blend-mode:screen}
+.ceu-rodape{display:flex;flex-direction:column;align-items:center}

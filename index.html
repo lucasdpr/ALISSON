@@ -7,7 +7,7 @@
 <meta name="description" content="A história de Alisson Henrique e Erica Ricardo, contada em fotos desde 2010.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Playfair+Display:ital,wght@0,600;1,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Lobster&family=Playfair+Display:ital,wght@0,600;1,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
@@ -27,6 +27,25 @@
 
 <main id="historia"></main>
 
+<section id="aniversario" class="aniversario" aria-label="Feliz aniversário">
+  <canvas id="fogos" aria-hidden="true"></canvas>
+  <div class="ceu" id="ceu">
+    <h2 class="aniv-titulo"><span class="brilho" aria-hidden="true">✨</span><span class="arco">Feliz Aniversário</span><span class="brilho" aria-hidden="true">✨</span><small>meu amor</small></h2>
+    <div class="ceu-rodape">
+      <p class="olhe">olhe para o céu… 🎆</p>
+      <button class="som-fogos" id="som-fogos" type="button">🔈 ligar o som dos fogos</button>
+    </div>
+  </div>
+  <div class="aniv-conteudo">
+    <div class="aniv-foto-box"><div class="aniv-foto-wrap"><img id="aniv-foto" alt="Alisson no pôr do sol"><canvas id="fogos-foto" aria-hidden="true"></canvas></div></div>
+    <article class="carta">
+      <div id="carta-texto"></div>
+      <p id="carta-assinatura" class="assinatura-carta"></p>
+    </article>
+    <p class="toque-fogos">toque na tela para mais fogos 🎆</p>
+  </div>
+</section>
+
 <section class="cena fim">
   <div id="final-video"></div>
   <p class="maquina">…e a história continua.</p>
@@ -37,5 +56,6 @@
 <dialog id="zoom"><img alt=""><button aria-label="Fechar">×</button></dialog>
 <script src="dados.js"></script>
 <script src="app.js"></script>
+<script src="aniversario.js"></script>
 </body>
 </html>

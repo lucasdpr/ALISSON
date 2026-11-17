@@ -201,3 +201,4 @@ if (!calmo) setInterval(() => parts.length < 20 && explodir(1), 1100);
 new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && explodir(40)), { threshold: .6 }).observe($(".fim"));
 $("#replay").onclick = () => scrollTo({ top: 0, behavior: calmo ? "auto" : "smooth" });
 const z = $("#zoom"); z.addEventListener("click", () => z.close());
+$("#aniv-foto")?.addEventListener("click", (e) => { e.stopPropagation(); zoom(e.target.src); });
