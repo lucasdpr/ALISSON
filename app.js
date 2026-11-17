@@ -18,9 +18,10 @@ if (PESSOA.aniversario) {
 }
 
 const linha = $("#linha");
-[...MOMENTOS].sort((x, y) => x.ano - y.ano).forEach((mo) => {
+MOMENTOS.forEach((mo) => {
   const item = el("section", "item");
-  item.append(el("div", "ano", mo.ano));
+  if (mo.ano) item.append(el("div", "ano", mo.ano));
+  else item.classList.add("sem-ano");
   const card = el("article", "card");
   const fotos = mo.fotos || (mo.foto ? [mo.foto] : []);
   if (fotos.length) {
@@ -41,7 +42,7 @@ const linha = $("#linha");
   linha.append(item);
 });
 
-const io = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && (e.target.classList.add("vis"), io.unobserve(e.target))), { threshold: .15 });
+const io = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && (e.target.classList.add("vis"), io.unobserve(e.target))), { threshold: .25, rootMargin: "0px 0px -10% 0px" });
 document.querySelectorAll(".item").forEach((i) => io.observe(i));
 
 const z = $("#zoom");
