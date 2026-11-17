@@ -48,7 +48,18 @@ function video(nome) {
   const v = el("video", "video");
   Object.assign(v, { src: "midia/" + nome, poster: "midia/" + nome.replace(/\.mp4$/, ".jpg"), muted: true, loop: true, playsInline: true, preload: "metadata" });
   v.setAttribute("muted", ""); v.setAttribute("playsinline", "");
-  return v;
+  // tocar no video liga/desliga o som (so um com som por vez)
+  const wrap = el("div", "video-wrap"); const som = el("button", "som", "🔇");
+  som.setAttribute("aria-label", "Ligar som");
+  const alternar = () => {
+    const ligar = v.muted;
+    $$("video").forEach((o) => { o.muted = true; o.parentNode.querySelector(".som").textContent = "🔇"; });
+    v.muted = !ligar; som.textContent = ligar ? "🔊" : "🔇"; som.setAttribute("aria-label", ligar ? "Desligar som" : "Ligar som");
+    if (ligar) v.play().catch(() => {});
+  };
+  v.onclick = alternar; som.onclick = alternar;
+  wrap.append(v, som);
+  return wrap;
 }
 
 // ---------- layouts ----------
@@ -112,7 +123,12 @@ CAPITULOS.forEach((c, i) => {
 
   const corpo = el("div", "corpo");
   (LAYOUTS[c.layout] || LAYOUTS.mosaico)(c, corpo);
-  if (c.video) { const v = el("div", "video-box"); v.append(video(c.video)); corpo.append(v); }
+  const vids = c.videos || (c.video ? [c.video] : []);
+  if (vids.length) {
+    const g = el("div", "videos");
+    vids.forEach((n) => { const b = el("div", "video-box"); b.append(video(n)); g.append(b); });
+    corpo.append(g);
+  }
   cap.append(corpo);
   historia.append(cap);
 });

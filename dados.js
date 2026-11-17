@@ -20,7 +20,7 @@ const PESSOA = {
 //            "telacheia" cada foto ocupa a tela inteira
 //            "destaque"  uma foto grande (as demais logo abaixo)
 //  fotos   : arquivos da pasta fotos/ — a PRIMEIRA é a foto principal do capítulo
-//  video   : (opcional) arquivo da pasta midia/
+//  videos  : (opcional) lista de arquivos da pasta midia/
 const CAPITULOS = [
   {
     titulo: "O começo",
@@ -148,7 +148,7 @@ const CAPITULOS = [
     ano: null,
     frase: "",
     layout: "destaque",
-    video: "chegada.mp4",
+    videos: ["chegada-colo.mp4", "chegada.mp4"],
     fotos: [
       "chegada-02.jpg",
     ],
@@ -158,7 +158,7 @@ const CAPITULOS = [
     ano: null,
     frase: "",
     layout: "mosaico",
-    video: "familia.mp4",
+    videos: ["familia.mp4", "familia-barco.mp4", "familia-arara.mp4", "familia-passeio.mp4"],
     fotos: [
       "familia-01.jpg",
       "familia-02.jpg",
