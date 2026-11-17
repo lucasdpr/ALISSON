@@ -82,6 +82,14 @@ const CAPITULOS = [
     ],
   },
   {
+    titulo: "O pedido",
+    ano: null,
+    frase: "Quer casar comigo?",
+    layout: "videos",
+    videos: ["pedido.mp4"],
+    fotos: [],
+  },
+  {
     titulo: "O ensaio",
     ano: null,
     frase: "",
