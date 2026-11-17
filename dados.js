@@ -20,6 +20,8 @@ const PESSOA = {
 //            "telacheia" cada foto ocupa a tela inteira
 //            "destaque"  uma foto grande (as demais logo abaixo)
 //            "videos"    só os vídeos (fotos pode ficar vazio)
+//            "pedido"    caixinha de aliança que abre e mostra o vídeo
+//            "raspadinha" raspe para revelar a 1ª foto (revelacao: texto que aparece depois)
 //  fotos   : arquivos da pasta fotos/ — a PRIMEIRA é a foto principal do capítulo
 //  videos  : (opcional) lista de arquivos da pasta midia/
 // Vídeo que fecha o site (montagem com música)
@@ -85,7 +87,7 @@ const CAPITULOS = [
     titulo: "O pedido",
     ano: null,
     frase: "Quer casar comigo?",
-    layout: "videos",
+    layout: "pedido",
     videos: ["pedido.mp4"],
     fotos: [],
   },
@@ -101,7 +103,7 @@ const CAPITULOS = [
     ],
   },
   {
-    titulo: "O sim",
+    titulo: "O casamento",
     ano: null,
     frase: "",
     layout: "carrossel",
@@ -139,8 +141,9 @@ const CAPITULOS = [
   {
     titulo: "A notícia",
     ano: null,
-    frase: "Dois risquinhos.",
-    layout: "destaque",
+    frase: "Uma mensagem que mudou tudo…",
+    layout: "raspadinha",
+    revelacao: "Oi, papai! 💗",
     fotos: [
       "noticia-01.jpg",
     ],
@@ -230,6 +233,7 @@ const CAPITULOS = [
     ano: null,
     frase: "",
     layout: "carrossel",
+    antesDepois: ["ad-antes.jpg", "ad-depois.jpg"],   // arraste para comparar
     videos: ["hoje.mp4"],
     fotos: [
       "hoje-01.jpg",

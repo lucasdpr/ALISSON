@@ -44,6 +44,20 @@
   <canvas id="fogos" aria-hidden="true"></canvas>
   <div class="ceu" id="ceu">
     <h2 class="aniv-titulo"><span class="brilho" aria-hidden="true">✨</span><span class="arco">Feliz Aniversário</span><span class="brilho" aria-hidden="true">✨</span><small>meu amor</small></h2>
+    <div class="bolo-area" id="bolo-area">
+      <button class="bolo" id="bolo" type="button" aria-label="Soprar as velas do bolo">
+        <span class="velas">
+          <span class="vela"><i class="chama"></i><i class="fumaca"></i></span>
+          <span class="vela"><i class="chama"></i><i class="fumaca"></i></span>
+          <span class="vela"><i class="chama"></i><i class="fumaca"></i></span>
+        </span>
+        <span class="andar andar-2"></span>
+        <span class="andar andar-1"></span>
+        <span class="prato"></span>
+      </button>
+      <p class="bolo-dica" id="bolo-dica">faça um pedido e toque no bolo para soprar as velas 🕯️</p>
+      <button class="soprar-mic" id="soprar-mic" type="button">🎤 ou sopre de verdade no microfone</button>
+    </div>
     <div class="ceu-rodape">
       <p class="olhe">olhe para o céu… 🎆</p>
       <button class="som-fogos" id="som-fogos" type="button">🔈 ligar o som dos fogos</button>
@@ -51,7 +65,17 @@
   </div>
   <div class="aniv-conteudo">
     <div class="aniv-foto-box"><div class="aniv-foto-wrap"><img id="aniv-foto" alt="Alisson no pôr do sol"><canvas id="fogos-foto" aria-hidden="true"></canvas></div></div>
-    <article class="carta">
+    <div class="envelope" id="envelope">
+      <button class="env" id="env-btn" type="button" aria-expanded="false" aria-controls="carta">
+        <span class="env-fundo"></span>
+        <span class="env-papel"></span>
+        <span class="env-frente"><span class="env-para" id="env-para"></span></span>
+        <span class="env-aba"></span>
+        <span class="env-selo" aria-hidden="true">❤</span>
+      </button>
+      <p class="env-dica">toque no envelope para abrir 💌</p>
+    </div>
+    <article class="carta" id="carta" hidden>
       <div id="carta-texto"></div>
       <p id="carta-assinatura" class="assinatura-carta"></p>
     </article>

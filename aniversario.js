@@ -23,6 +23,62 @@
   }), { threshold: .3 });
   document.querySelectorAll("#carta-texto p, .aniv-foto-box, .aniv-titulo, #carta-assinatura").forEach((n) => pObs.observe(n));
 
+  // ---------- bolo: soprar as velas libera os fogos ----------
+  const boloArea = $("#bolo-area"), micBtn = $("#soprar-mic");
+  let apagou = false, micStream = null, micRaf = 0, micAc = null;
+  function pararMic() {
+    cancelAnimationFrame(micRaf); micStream?.getTracks().forEach((t) => t.stop()); micStream = null;
+    micAc?.close().catch(() => {}); micAc = null;
+  }
+  function apagarVelas() {
+    if (apagou) return; apagou = true;
+    boloArea.classList.add("apagado");
+    $("#bolo-dica").textContent = "🎉 que todos os seus pedidos se realizem!";
+    micBtn.hidden = true; pararMic();
+    document.dispatchEvent(new CustomEvent("velas-apagadas"));
+  }
+  $("#bolo").onclick = (ev) => { ev.stopPropagation(); apagarVelas(); };
+  if (!navigator.mediaDevices?.getUserMedia) micBtn.hidden = true;
+  micBtn.onclick = async (ev) => {
+    ev.stopPropagation();
+    if (micStream) return;
+    try {
+      micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      micAc = new (window.AudioContext || window.webkitAudioContext)();
+      const an = micAc.createAnalyser(); an.fftSize = 1024;
+      micAc.createMediaStreamSource(micStream).connect(an);
+      const buf = new Float32Array(an.fftSize); let forte = 0;
+      micBtn.textContent = "🎤 pode soprar!"; micBtn.classList.add("ouvindo");
+      const ouvir = () => {
+        an.getFloatTimeDomainData(buf);
+        let s = 0; for (let i = 0; i < buf.length; i++) s += buf[i] * buf[i];
+        const rms = Math.sqrt(s / buf.length);
+        forte = rms > .12 ? forte + 1 : Math.max(0, forte - 1);   // sopro = som forte por alguns quadros seguidos
+        if (forte > 6) { apagarVelas(); return; }
+        micRaf = requestAnimationFrame(ouvir);
+      };
+      ouvir();
+      setTimeout(() => { if (!apagou && micStream) { pararMic(); micBtn.textContent = "🎤 tentar de novo"; micBtn.classList.remove("ouvindo"); } }, 20000);
+    } catch {
+      pararMic(); micBtn.textContent = "sem microfone 😅 toque no bolo";
+    }
+  };
+
+  // ---------- envelope: abre e mostra a carta ----------
+  const envBtn = $("#env-btn"), carta2 = $("#carta");
+  $("#env-para").textContent = "Para: " + PESSOA.nome.split(" ")[0] + " 💌";
+  envBtn.onclick = (ev) => {
+    ev.stopPropagation();
+    if (envBtn.classList.contains("aberto")) return;
+    envBtn.classList.add("aberto"); envBtn.setAttribute("aria-expanded", "true");
+    setTimeout(() => {
+      $("#envelope").classList.add("sumiu");
+      carta2.hidden = false;
+      requestAnimationFrame(() => carta2.classList.add("aberta"));
+      setTimeout(() => { $("#envelope").hidden = true; }, 600);
+    }, calmo ? 0 : 1000);
+  };
+
   if (calmo) { $("#som-fogos").hidden = true; $(".olhe").hidden = true; return; }
 
   // ---------- som (só depois que a pessoa tocar no botão) ----------
@@ -77,7 +133,7 @@
   const CORES = ["#ff3b6b", "#ffd23f", "#3bf7ff", "#a66bff", "#5bff8a", "#ff8a3b", "#ffffff", "#ff5ef1"];
   const cor = () => CORES[(Math.random() * CORES.length) | 0];
   const frases = ANIVERSARIO.fogosEscrevem || [ANIVERSARIO.nomeNosFogos || "Feliz aniversário"];
-  let foguetes = [], faiscas = [], ativo = false, ceuVisivel = false, escrevendo = false;
+  let foguetes = [], faiscas = [], ativo = false, ceuVisivel = false, escrevendo = false, liberado = false;
   let proxFrase = 0, ultimoTexto = -1e9, ultimoFoguete = 0;
   const cachePts = {};
 
@@ -105,7 +161,7 @@
 
   function lancar(texto = null) {
     const x = texto ? W / 2 : W * (.1 + Math.random() * .8);
-    const alvoY = texto ? H * .5 : H * (.1 + Math.random() * .38);
+    const alvoY = texto ? H * .46 : H * (.1 + Math.random() * .38);
     const vy = -(Math.sqrt(2 * .12 * (H - alvoY)) + .3);
     foguetes.push({ x, y: H + 10, vx: texto ? 0 : (Math.random() - .5) * 1.6, vy, alvoY, texto, cor: texto ? "#ffd23f" : cor() });
     somAssobio(Math.min(1.6, Math.abs(vy) / 7));
@@ -161,12 +217,12 @@
 
     // ritmo: mais fogos no céu, menos enquanto o nome está escrito (pra ler bem)
     const intervalo = escrevendo ? 900 : ceuVisivel ? 420 : 750;
-    if (ts - ultimoFoguete > intervalo + Math.random() * 400) {
+    if (liberado && ts - ultimoFoguete > intervalo + Math.random() * 400) {
       lancar(); if (!escrevendo && Math.random() < .35) lancar();
       ultimoFoguete = ts;
     }
     // uma frase a cada ~8s, só enquanto o "céu" está na tela
-    if (ceuVisivel && !escrevendo && ts - ultimoTexto > 8000) {
+    if (liberado && ceuVisivel && !escrevendo && ts - ultimoTexto > 8000) {
       lancar(frases[proxFrase % frases.length]); proxFrase++; ultimoTexto = ts;
     }
 
@@ -211,18 +267,23 @@
     if (e.isIntersecting && !ativo) {
       ativo = true; tam();
       // garante a fonte carregada antes de "escrever" com ela
-      (document.fonts ? document.fonts.load("100px Lobster") : Promise.resolve()).finally(() => {
-        ultimoTexto = performance.now() - 6800; // primeira frase logo nos primeiros segundos
-      });
+      document.fonts?.load("100px Lobster");
       requestAnimationFrame(quadro);
     } else if (!e.isIntersecting) ativo = false;
   }, { threshold: .02 }).observe(sec);
 
   new IntersectionObserver(([e]) => { ceuVisivel = e.isIntersecting; }, { threshold: .55 }).observe(ceu);
 
-  // toque na tela = mais fogos
+  // velas apagadas: começa o show (salva de fogos e, logo depois, o nome no céu)
+  document.addEventListener("velas-apagadas", () => {
+    liberado = true; ceu.classList.add("liberado"); sec.classList.add("liberado");
+    for (let i = 0; i < 8; i++) setTimeout(() => lancar(), 250 + i * 160);
+    ultimoTexto = performance.now() - 5200;
+  });
+
+  // toque na tela = mais fogos (depois de soprar as velas)
   sec.addEventListener("click", (ev) => {
-    if (ev.target.closest("img, button, a, .carta")) return;
+    if (!liberado || ev.target.closest("img, button, a, .carta, .envelope")) return;
     lancar(); lancar(); lancar();
   });
 })();

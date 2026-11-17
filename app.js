@@ -77,6 +77,13 @@ function video(nome) {
   };
   v.onclick = alternar; som.onclick = alternar;
   wrap.append(v, som);
+  // respeita o formato original do vídeo (deitado ou em pé), sem cortar
+  const pi = new Image();
+  pi.onload = () => {
+    v.style.setProperty("--ar", `${pi.naturalWidth} / ${pi.naturalHeight}`);
+    if (pi.naturalWidth > pi.naturalHeight * 1.05) { wrap.classList.add("deitado"); setTimeout(() => wrap.parentElement?.classList.add("deitado")); }
+  };
+  pi.src = v.poster;
   return wrap;
 }
 
@@ -118,12 +125,134 @@ const LAYOUTS = {
     });
   },
   videos() {},
+  pedido(c, box) {
+    const p = el("div", "pedido");
+    const caixa = el("button", "caixa"); caixa.type = "button"; caixa.setAttribute("aria-label", "Abrir a caixinha da aliança");
+    const base = el("span", "caixa-base"), almofada = el("span", "caixa-almofada");
+    almofada.append(el("span", "caixa-anel", "💍")); base.append(almofada);
+    caixa.append(el("span", "caixa-brilho"), base, el("span", "caixa-tampa"));
+    const dica = el("p", "pedido-dica", "toque na caixinha…");
+    const revela = el("div", "pedido-revela"); revela.hidden = true;
+    (c.videos || []).forEach((n) => { const b = el("div", "video-box pedido-video"); b.append(video(n)); revela.append(b); });
+    const sim = el("p", "disse-sim", "Ela disse SIM! 💍");
+    revela.append(sim);
+    caixa.onclick = () => {
+      if (p.classList.contains("aberta")) return;
+      p.classList.add("aberta"); dica.textContent = "✨";
+      const r = caixa.getBoundingClientRect(); explodirEm(r.left + r.width / 2, r.top + r.height / 3, 24);
+      setTimeout(() => {
+        revela.hidden = false;
+        requestAnimationFrame(() => { revela.classList.add("on"); $$(".video-box", revela).forEach((b) => b.classList.add("vis")); });
+        $(".video-box", revela)?.scrollIntoView({ behavior: calmo ? "auto" : "smooth", block: "center" });
+      }, calmo ? 0 : 1300);
+      setTimeout(() => {
+        sim.classList.add("on");
+        const s = sim.getBoundingClientRect(); explodirEm(s.left + s.width / 2, s.top + s.height / 2, 40);
+      }, calmo ? 0 : 2900);
+    };
+    p.append(caixa, dica, revela); box.append(p);
+    return true; // os vídeos já foram colocados aqui dentro
+  },
+  raspadinha(c, box) {
+    const [prim, ...resto] = c.fotos;
+    const r = el("div", "raspa-box");
+    const card = el("div", "raspa");
+    const img = foto(prim, "min(360px, 78vw)", "", "Foto surpresa"); img.loading = "eager";
+    const cvs = el("canvas", "raspa-cv"); cvs.setAttribute("role", "img"); cvs.setAttribute("aria-label", "Raspadinha: raspe para revelar a foto");
+    const msg = el("p", "raspa-msg", c.revelacao || "");
+    const pular = el("button", "raspa-pular", "revelar sem raspar"); pular.type = "button";
+    card.append(img, cvs);
+    r.append(card, el("p", "raspa-dica", "raspe com o dedo ✨"), msg, pular);
+    box.append(r);
+    if (resto.length) { const m = el("div", "mini"); resto.forEach((f) => m.append(foto(f, "min(44vw, 300px)"))); box.append(m); }
+    const revelar = iniciarRaspadinha(card, cvs, () => {
+      r.classList.add("revelado");
+      const b = card.getBoundingClientRect(); explodirEm(b.left + b.width / 2, b.top + b.height / 2, 50);
+    });
+    pular.onclick = revelar;
+  },
   destaque(c, box) {
     const [prim, ...resto] = c.fotos;
     const d = el("div", "destaque"); d.append(foto(prim, "min(640px, 100vw)")); box.append(d);
     if (resto.length) { const m = el("div", "mini"); resto.forEach((f) => m.append(foto(f, "min(44vw, 300px)"))); box.append(m); }
   },
 };
+
+// ---------- raspadinha ----------
+function iniciarRaspadinha(card, cvs, aoRevelar) {
+  const ctx = cvs.getContext("2d");
+  let feito = false, riscos = 0, desenhando = false, ultimo = null;
+  function pintar() {
+    const w = card.clientWidth, h = card.clientHeight; if (!w || !h || feito) return;
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    cvs.width = w * dpr; cvs.height = h * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.globalCompositeOperation = "source-over";
+    const g = ctx.createLinearGradient(0, 0, w, h);
+    [["#cfcfd4", 0], ["#f7f7fa", .22], ["#b9b9c2", .45], ["#efeff3", .7], ["#a9a9b3", 1]].forEach(([c, o]) => g.addColorStop(o, c));
+    ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
+    for (let i = 0; i < 90; i++) { ctx.fillStyle = `rgba(255,255,255,${Math.random() * .7})`; ctx.fillRect(Math.random() * w, Math.random() * h, 2, 2); }
+    ctx.textAlign = "center"; ctx.fillStyle = "#6d4c7d";
+    ctx.font = `700 ${Math.round(w / 7)}px Caveat, cursive`; ctx.fillText("Raspe aqui", w / 2, h / 2 - w / 16);
+    ctx.font = `${Math.round(w / 6)}px serif`; ctx.fillText("💗", w / 2, h / 2 + w / 6);
+  }
+  new ResizeObserver(() => { if (!riscos) pintar(); }).observe(card);
+  document.fonts?.ready.then(() => { if (!riscos) pintar(); });
+  const pos = (e) => { const b = cvs.getBoundingClientRect(); return [e.clientX - b.left, e.clientY - b.top]; };
+  function riscar(a, b) {
+    ctx.globalCompositeOperation = "destination-out";
+    ctx.lineWidth = Math.max(30, card.clientWidth / 8); ctx.lineCap = ctx.lineJoin = "round";
+    ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
+  }
+  function checar() {
+    const d = ctx.getImageData(0, 0, cvs.width, cvs.height).data; let limpo = 0, total = 0;
+    for (let i = 3; i < d.length; i += 4 * 29) { total++; if (d[i] < 40) limpo++; }
+    if (total && limpo / total > .45) revelar();
+  }
+  cvs.addEventListener("pointerdown", (e) => {
+    if (feito) return; desenhando = true; cvs.setPointerCapture(e.pointerId);
+    ultimo = pos(e); riscar(ultimo, [ultimo[0] + .1, ultimo[1]]); riscos++;
+  });
+  cvs.addEventListener("pointermove", (e) => {
+    if (!desenhando || feito) return;
+    const p = pos(e); riscar(ultimo, p); ultimo = p;
+    if (++riscos % 12 === 0) checar();
+  });
+  const parar = () => { if (desenhando) { desenhando = false; checar(); } };
+  cvs.addEventListener("pointerup", parar); cvs.addEventListener("pointercancel", parar);
+  function revelar() {
+    if (feito) return; feito = true;
+    cvs.classList.add("sumir"); setTimeout(() => cvs.remove(), 900);
+    aoRevelar();
+  }
+  return revelar;
+}
+
+// ---------- antes & depois (arrastar para comparar) ----------
+function antesDepois([antes, depois]) {
+  const box = el("div", "ad-box");
+  const w = el("div", "ad");
+  const b = el("img", "ad-img"); b.src = leve(depois); b.alt = "Hoje"; b.loading = "lazy";
+  const topo = el("div", "ad-topo"); const a = el("img", "ad-img"); a.src = leve(antes); a.alt = String(primeiroAno || "Antes"); a.loading = "lazy"; topo.append(a);
+  const linha = el("div", "ad-linha"); const alca = el("button", "ad-alca", "‹ ›"); alca.type = "button";
+  alca.setAttribute("aria-label", "Comparar antes e hoje: use as setas do teclado"); linha.append(alca);
+  w.append(b, topo, linha, el("span", "ad-tag ad-esq", String(primeiroAno || "antes")), el("span", "ad-tag ad-dir", "hoje"));
+  let p = 50;
+  const set = (v) => { p = Math.max(0, Math.min(100, v)); w.style.setProperty("--p", p + "%"); };
+  set(50);
+  const deX = (e) => { const r = w.getBoundingClientRect(); set((e.clientX - r.left) / r.width * 100); };
+  let arrastando = false;
+  w.addEventListener("pointerdown", (e) => { arrastando = true; w.classList.remove("demo"); if (e.pointerType === "mouse") deX(e); });
+  w.addEventListener("pointermove", (e) => { if (arrastando) deX(e); });
+  ["pointerup", "pointercancel", "pointerleave"].forEach((t) => w.addEventListener(t, () => { arrastando = false; }));
+  alca.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft") { set(p - 5); e.preventDefault(); }
+    if (e.key === "ArrowRight") { set(p + 5); e.preventDefault(); }
+  });
+  // quando aparece, a linha "balança" uma vez para mostrar que dá pra arrastar
+  new IntersectionObserver(([e], o) => { if (e.isIntersecting) { if (!calmo) w.classList.add("demo"); o.disconnect(); } }, { threshold: .6 }).observe(w);
+  box.append(el("p", "ad-titulo", `${primeiroAno || "antes"} → hoje`), w, el("p", "ad-dica", "arraste para os lados ↔"));
+  return box;
+}
 
 // ---------- monta capítulos ----------
 const historia = $("#historia");
@@ -146,9 +275,10 @@ CAPITULOS.forEach((c, i) => {
   cap.append(ab);
 
   const corpo = el("div", "corpo");
-  (LAYOUTS[c.layout] || LAYOUTS.mosaico)(c, corpo);
+  if (c.antesDepois) corpo.append(antesDepois(c.antesDepois));
+  const tratouVideos = (LAYOUTS[c.layout] || LAYOUTS.mosaico)(c, corpo);
   const vids = c.videos || (c.video ? [c.video] : []);
-  if (vids.length) {
+  if (vids.length && !tratouVideos) {
     const g = el("div", "videos");
     vids.forEach((n) => { const b = el("div", "video-box"); b.append(video(n)); g.append(b); });
     corpo.append(g);
@@ -168,7 +298,7 @@ if (typeof VIDEO_FINAL !== "undefined" && VIDEO_FINAL) {
 const rev = new IntersectionObserver((es) => es.forEach((e) => {
   if (e.isIntersecting) { e.target.classList.add("vis"); rev.unobserve(e.target); }
 }), { threshold: .2, rootMargin: "0px 0px -8% 0px" });
-$$(".abertura, .polaroid, .cel, .tela, .destaque, .mini, .carrossel-wrap, .video-box").forEach((n) => rev.observe(n));
+$$(".abertura, .polaroid, .cel, .tela, .destaque, .mini, .carrossel-wrap, .video-box, .ad-box, .raspa-box, .pedido").forEach((n) => rev.observe(n));
 
 // vídeos só tocam quando visíveis (economiza bateria/dados)
 const vio = new IntersectionObserver((es) => es.forEach((e) => {
@@ -253,8 +383,8 @@ addEventListener("scroll", () => {
 const cv = $("#coracoes"), cx = cv.getContext("2d"); let parts = [];
 function tam() { cv.width = innerWidth * devicePixelRatio; cv.height = innerHeight * devicePixelRatio; cx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0); }
 tam(); addEventListener("resize", tam);
-function coracao(x, y, s, a) {
-  cx.globalAlpha = a; cx.fillStyle = "#ff8a7a"; cx.beginPath(); cx.moveTo(x, y + s / 4);
+function coracao(x, y, s, a, c = "#ff8a7a") {
+  cx.globalAlpha = a; cx.fillStyle = c; cx.beginPath(); cx.moveTo(x, y + s / 4);
   cx.bezierCurveTo(x, y, x - s / 2, y, x - s / 2, y + s / 4); cx.bezierCurveTo(x - s / 2, y + s / 2, x, y + s * .7, x, y + s);
   cx.bezierCurveTo(x, y + s * .7, x + s / 2, y + s / 2, x + s / 2, y + s / 4); cx.bezierCurveTo(x + s / 2, y, x, y, x, y + s / 4); cx.fill();
 }
@@ -262,14 +392,31 @@ function explodir(n = 10) {
   if (calmo) return;
   for (let i = 0; i < n; i++) parts.push({ x: Math.random() * innerWidth, y: innerHeight + 20, vy: 1 + Math.random() * 2, vx: (Math.random() - .5) * .8, s: 8 + Math.random() * 14, a: .2 + Math.random() * .35, w: Math.random() * 6 });
 }
+// explosão de corações num ponto da tela (toques, surpresas)
+function explodirEm(x, y, n = 16) {
+  if (calmo) return;
+  const cores = ["#ff4d7d", "#ff8a7a", "#ffd23f", "#ff5ef1", "#ffffff"];
+  for (let i = 0; i < n; i++) {
+    const ang = Math.random() * Math.PI * 2, v = 1.5 + Math.random() * 4.5;
+    parts.push({ x, y, vx: Math.cos(ang) * v, vy: Math.sin(ang) * v * .7 + 1.4, s: 10 + Math.random() * 16, a: .95, w: Math.random() * 6, f: .95, fade: .011, c: cores[i % cores.length] });
+  }
+}
 (function loop(t) {
   cx.clearRect(0, 0, innerWidth, innerHeight);
-  parts = parts.filter((p) => p.y > -40);
-  parts.forEach((p) => { p.y -= p.vy; p.x += p.vx + Math.sin(t / 600 + p.w) * .4; coracao(p.x, p.y, p.s, p.a); });
+  parts = parts.filter((p) => p.y > -40 && p.a > 0);
+  parts.forEach((p) => {
+    if (p.f) p.vx *= p.f; if (p.fade) p.a -= p.fade;
+    p.y -= p.vy; p.x += p.vx + Math.sin(t / 600 + p.w) * .4; coracao(p.x, p.y, p.s, Math.max(0, p.a), p.c);
+  });
   requestAnimationFrame(loop);
 })(0);
 if (!calmo) setInterval(() => parts.length < 20 && explodir(1), 1100);
 
 new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && explodir(40)), { threshold: .6 }).observe($(".fim"));
+// tocar em qualquer lugar da história solta corações
+document.addEventListener("click", (e) => {
+  if (calmo || e.target.closest("button, a, img, video, canvas, input, dialog, .menu, #aniversario, .ad")) return;
+  explodirEm(e.clientX, e.clientY, 14);
+});
 $("#replay").onclick = () => scrollTo({ top: 0, behavior: calmo ? "auto" : "smooth" });
 $("#aniv-foto")?.addEventListener("click", (e) => { e.stopPropagation(); abrirGaleria([ANIVERSARIO.foto], 0); });
