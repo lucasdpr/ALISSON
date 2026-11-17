@@ -43,3 +43,6 @@ dialog{border:0;background:transparent;padding:0;max-width:95vw;max-height:95vh}
 dialog::backdrop{background:rgba(0,0,0,.85)}
 dialog img{max-width:95vw;max-height:90vh;border-radius:8px}
 dialog button{position:absolute;top:-2.2rem;right:0;background:none;border:0;color:#fff;font-size:2rem;cursor:pointer}
+.galeria{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
+.galeria img{aspect-ratio:1;object-fit:cover;height:100%}
+.galeria img:first-child{grid-column:span 2;grid-row:span 2}

@@ -22,10 +22,15 @@ const linha = $("#linha");
   const item = el("section", "item");
   item.append(el("div", "ano", mo.ano));
   const card = el("article", "card");
-  if (mo.foto) {
-    const img = el("img"); img.src = "fotos/" + mo.foto; img.alt = mo.titulo || `Foto de ${mo.ano}`; img.loading = "lazy";
-    img.onclick = () => { const z = $("#zoom"); z.querySelector("img").src = img.src; z.showModal(); };
-    card.append(img);
+  const fotos = mo.fotos || (mo.foto ? [mo.foto] : []);
+  if (fotos.length) {
+    const g = el("div", fotos.length > 1 ? "galeria" : "");
+    fotos.forEach((f, i) => {
+      const img = el("img"); img.src = "fotos/" + f; img.alt = `${mo.titulo || "Foto"} — ${mo.ano} (${i + 1})`; img.loading = "lazy";
+      img.onclick = () => { const z = $("#zoom"); z.querySelector("img").src = img.src; z.showModal(); };
+      g.append(img);
+    });
+    card.append(g);
   } else card.append(el("div", "vazio", "Foto em breve"));
   const corpo = el("div", "corpo");
   if (mo.data) corpo.append(el("p", "data", mo.data));
