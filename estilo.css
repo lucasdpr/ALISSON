@@ -14,7 +14,7 @@ body{margin:0;background:#120d0b;color:var(--ink);font:400 1rem/1.6 Inter,system
 .progresso span{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff8a7a,#ffd27a)}
 
 .contador{position:fixed;right:clamp(12px,3vw,32px);bottom:clamp(12px,3vw,28px);z-index:10;text-align:right;opacity:0;transition:opacity .6s;pointer-events:none}
-.contador.on{opacity:1}
+.contador.on[data-tem="1"]{opacity:1}
 .contador small{display:block;letter-spacing:.35em;text-transform:uppercase;font-size:.7rem;opacity:.7}
 .contador b{font:600 clamp(2.6rem,7vw,4.5rem)/1 "Playfair Display",serif;display:inline-block}
 .contador b.vira{animation:vira .6s ease}
@@ -31,32 +31,86 @@ h1.on{opacity:1;transform:none}
 .role{position:absolute;bottom:2rem;font-size:.85rem;letter-spacing:.2em;opacity:.6;animation:flutua 2.4s ease-in-out infinite}
 @keyframes flutua{50%{transform:translateY(8px)}}
 
-/* cada momento = uma cena com uma polaroid */
-.momento{min-height:110svh;display:grid;place-items:center;padding:4rem 16px;perspective:1200px}
-.polaroid{background:var(--papel);padding:14px 14px 0;width:min(420px,86vw);box-shadow:0 30px 60px rgba(0,0,0,.55),0 4px 10px rgba(0,0,0,.3);position:relative;
-  opacity:0;transform:translateY(120px) rotate(var(--r0)) scale(.85);transition:opacity .8s ease,transform 1.2s cubic-bezier(.2,.9,.25,1.15)}
-.momento.vis .polaroid{opacity:1;transform:rotate(var(--r)) }
-.polaroid::before{content:"";position:absolute;top:-14px;left:50%;width:110px;height:30px;background:rgba(255,240,200,.65);transform:translateX(-50%) rotate(var(--fita));box-shadow:0 2px 4px rgba(0,0,0,.15)}
-.foto{overflow:hidden;background:#222;aspect-ratio:4/5}
-.foto img{width:100%;height:100%;object-fit:cover;display:block;cursor:zoom-in;filter:sepia(1) contrast(.8) brightness(1.4);transition:filter 2.2s ease .5s}
-.momento.vis .foto img{filter:none}
-.legenda{font:700 1.7rem/1.2 Caveat,cursive;color:#3a2a22;text-align:center;padding:.7rem .5rem 1rem;min-height:3.6rem}
-.legenda small{display:block;font:500 1.2rem Caveat,cursive;color:#7a6050}
-.texto{max-width:30em;margin:2.2rem auto 0;font:italic 500 clamp(1.05rem,2.4vw,1.3rem)/1.6 "Playfair Display",serif;opacity:0;transform:translateY(20px);transition:1s ease .6s;text-align:center}
-.momento.vis .texto{opacity:1;transform:none}
-.marco{font:600 clamp(3rem,12vw,8rem)/1 "Playfair Display",serif;color:transparent;-webkit-text-stroke:1px rgba(255,248,240,.35);margin-bottom:-1.2rem;letter-spacing:.05em}
+
+/* ---------- capítulos ---------- */
+.capitulo{padding:10vh 16px 14vh;position:relative}
+.abertura{min-height:70svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;opacity:0;transform:translateY(40px) scale(.96);transition:opacity 1s ease,transform 1.2s cubic-bezier(.2,.8,.2,1)}
+.abertura.vis{opacity:1;transform:none}
+.num{font:500 1.5rem Caveat,cursive;color:var(--accent);margin:0}
+.marco{font:600 clamp(4rem,16vw,10rem)/1 "Playfair Display",serif;color:transparent;-webkit-text-stroke:1.5px rgba(255,248,240,.5);letter-spacing:.04em}
+.abertura h2{font:600 clamp(2.2rem,7vw,4.4rem)/1.1 "Playfair Display",serif;margin:.3rem 0 0}
+.frase{font:italic 500 clamp(1.1rem,2.6vw,1.45rem) "Playfair Display",serif;opacity:.85;margin:1rem 0 0;max-width:28em}
+.corpo{max-width:1100px;margin:0 auto}
+img{display:block}
+.corpo img{cursor:zoom-in}
+
+/* polaroid (mural) */
+.polaroid{background:var(--papel);padding:10px 10px 0;margin:0;box-shadow:0 20px 40px rgba(0,0,0,.5);position:relative;
+  opacity:0;transform:translateY(80px) rotate(calc(var(--r) * -3)) scale(.8);transition:opacity .7s ease,transform 1.1s cubic-bezier(.2,.9,.25,1.2)}
+.polaroid.vis{opacity:1;transform:rotate(var(--r))}
+.polaroid:hover{transform:rotate(0) scale(1.04);z-index:2}
+.polaroid::before{content:"";position:absolute;top:-12px;left:50%;width:80px;height:24px;background:rgba(255,240,200,.6);transform:translateX(-50%) rotate(var(--fita))}
+.foto{overflow:hidden;aspect-ratio:4/5;background:#222}
+.foto img{width:100%;height:100%;object-fit:cover;filter:sepia(1) contrast(.8) brightness(1.3);transition:filter 2s ease .4s}
+.polaroid.vis .foto img{filter:none}
+.legenda{font:700 1.5rem/1.2 Caveat,cursive;color:#3a2a22;text-align:center;padding:.4rem .4rem .7rem;min-height:2.6rem}
+.mural{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:34px 26px;align-items:start}
+.mural .grande{grid-column:1/-1;width:min(420px,88vw);justify-self:center;padding:14px 14px 0;margin-bottom:2rem}
+.mural .grande .legenda{font-size:2rem}
+
+/* mosaico */
+.mosaico{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));grid-auto-rows:170px;grid-auto-flow:dense;gap:8px}
+.cel{overflow:hidden;border-radius:6px;opacity:0;transform:scale(.85);transition:opacity .7s ease var(--d),transform .9s cubic-bezier(.2,.8,.2,1) var(--d)}
+.cel.vis{opacity:1;transform:none}
+.cel.g{grid-column:span 2;grid-row:span 2}.cel.alta{grid-row:span 2}
+.cel img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+.cel:hover img{transform:scale(1.08)}
+
+/* carrossel */
+.carrossel-wrap{position:relative;opacity:0;transform:translateX(80px);transition:1s cubic-bezier(.2,.8,.2,1)}
+.carrossel-wrap.vis{opacity:1;transform:none}
+.carrossel{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:10px 0 20px;scrollbar-width:none}
+.carrossel::-webkit-scrollbar{display:none}
+.slide{flex:0 0 min(70vw,420px);scroll-snap-align:center;border-radius:10px;overflow:hidden;box-shadow:0 14px 30px rgba(0,0,0,.4)}
+.slide img{width:100%;height:min(75vh,560px);object-fit:cover}
+.nav{position:absolute;top:45%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.85);color:#222;font-size:1.6rem;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.3)}
+.prev{left:-8px}.next{right:-8px}
+.dica{text-align:center;font:500 1.2rem Caveat,cursive;opacity:.7;margin:0}
+@media (hover:none){.nav{display:none}}
+
+/* tela cheia */
+.layout-telacheia .corpo{max-width:none;margin:0 -16px}
+.tela{position:relative;height:100svh;display:grid;place-items:center;overflow:hidden;clip-path:inset(8% 8% round 18px);transition:clip-path 1.4s cubic-bezier(.2,.8,.2,1)}
+.tela.vis{clip-path:inset(0 0 round 0)}
+.tela-bg{position:absolute;inset:-40px;background:center/cover;filter:blur(30px) brightness(.5)}
+.tela img{position:relative;max-width:100%;max-height:100%;object-fit:contain;transform:scale(1.12);transition:transform 2.5s ease}
+.tela.vis img{transform:none}
+
+/* destaque */
+.destaque{max-width:640px;margin:0 auto;border-radius:12px;overflow:hidden;box-shadow:0 30px 70px rgba(0,0,0,.6);opacity:0;transform:scale(.7);transition:opacity 1s ease,transform 1.4s cubic-bezier(.2,.9,.25,1.15)}
+.destaque.vis{opacity:1;transform:none}
+.destaque img{width:100%}
+.mini{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-top:20px;opacity:0;transition:opacity 1s .4s}
+.mini.vis{opacity:1}
+.mini img{width:min(44vw,300px);border-radius:10px}
+
+/* vídeo */
+.video-box{max-width:420px;margin:40px auto 0;border-radius:14px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.55);opacity:0;transform:translateY(40px);transition:1s ease}
+.video-box.vis{opacity:1;transform:none}
+.video{width:100%;display:block}
 
 .fim button{margin-top:2rem;background:none;border:1px solid rgba(255,255,255,.4);color:var(--ink);padding:.7rem 1.4rem;border-radius:99px;font:inherit;cursor:pointer}
-.fim button:hover{background:rgba(255,255,255,.1)}
-
 dialog{border:0;background:transparent;padding:0;max-width:95vw;max-height:95vh}
 dialog::backdrop{background:rgba(0,0,0,.9)}
 dialog img{max-width:95vw;max-height:90vh;border-radius:6px}
 dialog button{position:absolute;top:-2.4rem;right:0;background:none;border:0;color:#fff;font-size:2rem;cursor:pointer}
 
+@media (max-width:600px){
+  .mural{grid-template-columns:repeat(2,1fr);gap:26px 18px}
+  .mosaico{grid-template-columns:repeat(2,1fr);grid-auto-rows:150px}
+}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
-  .polaroid,.texto,h1{opacity:1!important;transform:rotate(var(--r,0))!important}
+  .abertura,.polaroid,.cel,.tela,.destaque,.mini,.carrossel-wrap,.video-box,h1{opacity:1!important;transform:none!important;clip-path:none!important}
   .foto img{filter:none!important}
-  html{scroll-behavior:auto}
 }
