@@ -13,7 +13,7 @@ function digitar(alvo, texto, ms = 55) {
 }
 $("#nome").textContent = PESSOA.nome;
 if (PESSOA.esposa) $("#casal").textContent = "& " + PESSOA.esposa;
-$("#assinatura").textContent = [PESSOA.nome.split(" ")[0], PESSOA.esposa, PESSOA.filha].filter(Boolean).join(", ").replace(/, ([^,]*)$/, " e $1");
+$("#assinatura").textContent = [PESSOA.nome.split(" ")[0], PESSOA.esposa?.split(" ")[0], PESSOA.filha].filter(Boolean).join(", ").replace(/, ([^,]*)$/, " e $1");
 const primeiroAno = CAPITULOS.find((c) => c.ano)?.ano;
 digitar($("#maquina"), primeiroAno ? `Em ${primeiroAno}, começou a história de…` : "Esta é a história de…").then(() => { $("#nome").classList.add("on"); setTimeout(() => $("#casal").classList.add("on"), 700); });
 

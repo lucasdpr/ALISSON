@@ -3,8 +3,8 @@
 // ============================================================
 
 const PESSOA = {
-  nome: "Alisson Henrique Ribeiro de Almeida",
-  esposa: "Erica",
+  nome: "Alisson Henrique",
+  esposa: "Erica Ricardo",
   filha: "Manuela",
   aniversario: "",   // formato "AAAA-MM-DD"; vazio = não mostra
 };
