@@ -19,6 +19,7 @@ const PESSOA = {
 //            "carrossel" fotos lado a lado, desliza para o lado
 //            "telacheia" cada foto ocupa a tela inteira
 //            "destaque"  uma foto grande (as demais logo abaixo)
+//            "videos"    só os vídeos (fotos pode ficar vazio)
 //  fotos   : arquivos da pasta fotos/ — a PRIMEIRA é a foto principal do capítulo
 //  videos  : (opcional) lista de arquivos da pasta midia/
 // Vídeo que fecha o site (montagem com música)
@@ -141,7 +142,7 @@ const CAPITULOS = [
     ano: null,
     frase: "",
     layout: "telacheia",
-    videos: ["espera-caminhada.mp4", "espera-estudio.mp4"],
+    videos: ["espera-ultrassom-3d.mp4", "espera-ultrassom.mp4", "espera-caminhada.mp4", "espera-estudio.mp4"],
     fotos: [
       "espera-01.jpg",
       "espera-02.jpg",
@@ -191,5 +192,24 @@ const CAPITULOS = [
       "familia-24.jpg",
       "familia-25.jpg",
     ],
+  },
+  {
+    titulo: "Por aí, nós três",
+    ano: null,
+    frase: "",
+    layout: "videos",
+    videos: [
+      "passeio-estadio.mp4",
+      "passeio-aquario.mp4",
+      "passeio-maozinha.mp4",
+      "passeio-trilha.mp4",
+      "passeio-pedras.mp4",
+      "passeio-praia.mp4",
+      "passeio-por-do-sol.mp4",
+      "passeio-mirante.mp4",
+      "passeio-fim-de-tarde.mp4",
+      "passeio-festa-junina.mp4",
+    ],
+    fotos: [],
   },
 ];

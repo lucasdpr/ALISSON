@@ -98,6 +98,7 @@ const LAYOUTS = {
       const img = foto(f); s.append(bg, img); box.append(s);
     });
   },
+  videos() {},
   destaque(c, box) {
     const [prim, ...resto] = c.fotos;
     const d = el("div", "destaque"); d.append(foto(prim)); box.append(d);
@@ -112,7 +113,8 @@ CAPITULOS.forEach((c, i) => {
   if (c.ano) anoCorrente = c.ano;
   const cap = el("section", "capitulo layout-" + c.layout);
   cap.dataset.ano = c.ano || "";
-  cap.dataset.foto = "fotos/" + c.fotos[0];
+  const v0 = (c.videos || [])[0];
+  cap.dataset.foto = c.fotos[0] ? "fotos/" + c.fotos[0] : v0 ? "midia/" + v0.replace(/\.mp4$/, ".jpg") : "";
 
   const ab = el("header", "abertura");
   ab.append(el("p", "num", `capítulo ${i + 1}`));
