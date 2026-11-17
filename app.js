@@ -304,7 +304,7 @@ CAPITULOS.forEach((c, i) => {
     const frente = el("span", "conq-frente");
     frente.append(el("span", "conq-icone", c.icone), el("span", "conq-cadeado", "🔒"), el("span", "conq-nome", c.titulo));
     const verso = el("span", "conq-verso");
-    if (c.foto) { const im = el("img"); im.src = leve(c.foto); im.alt = c.titulo; im.loading = "lazy"; verso.append(im); }
+    if (c.foto) { const im = el("img"); im.src = leve(c.foto); im.alt = c.titulo; im.loading = "lazy"; if (c.enquadrar) im.style.objectPosition = c.enquadrar; verso.append(im); }
     else verso.append(el("span", "conq-embreve", c.icone + "\nfoto em breve"));
     const faixa = el("span", "conq-faixa"); faixa.append(el("strong", "", c.icone + " " + c.titulo));
     if (c.detalhe) faixa.append(el("small", "", c.detalhe));

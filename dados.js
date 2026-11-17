@@ -250,12 +250,12 @@ const CAPITULOS = [
 
 // ============================================================
 //  NOSSAS CONQUISTAS — troféus que ele toca para desbloquear
-//  (foto vazia = aparece "foto em breve")
+//  (foto vazia = aparece "foto em breve"; enquadrar = qual parte da foto fica no centro do card)
 // ============================================================
 const CONQUISTAS = [
   { icone: "🎓", titulo: "A formatura da Erica", foto: "formatura-01.jpg" },
   { icone: "💍", titulo: "O casamento", foto: "casamento-01.jpg" },
-  { icone: "🏠", titulo: "A nossa casa", foto: "" },
+  { icone: "🏠", titulo: "A nossa casa", foto: "casa-chave.jpg", enquadrar: "38% 72%" },
   { icone: "👶", titulo: "A Manuella", detalhe: "a maior de todas", foto: "familia-01.jpg" },
 ];
 
