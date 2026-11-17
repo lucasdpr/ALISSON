@@ -114,3 +114,7 @@ dialog button{position:absolute;top:-2.4rem;right:0;background:none;border:0;col
   .abertura,.polaroid,.cel,.tela,.destaque,.mini,.carrossel-wrap,.video-box,h1{opacity:1!important;transform:none!important;clip-path:none!important}
   .foto img{filter:none!important}
 }
+.casal{font:700 clamp(2rem,6vw,3.4rem) Caveat,cursive;color:var(--accent);margin:.4rem 0 0;opacity:0;transform:translateY(14px);transition:1s ease}
+.casal.on{opacity:1;transform:none}
+.assinatura{font:600 clamp(1.6rem,5vw,2.6rem) "Playfair Display",serif;margin:1rem 0 0}
+@media (prefers-reduced-motion:reduce){.casal{opacity:1!important;transform:none!important}}

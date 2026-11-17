@@ -4,6 +4,8 @@
 
 const PESSOA = {
   nome: "Alisson Henrique Ribeiro de Almeida",
+  esposa: "Erica",
+  filha: "Manuela",
   aniversario: "",   // formato "AAAA-MM-DD"; vazio = não mostra
 };
 
@@ -142,7 +144,7 @@ const CAPITULOS = [
     ],
   },
   {
-    titulo: "Ela chegou",
+    titulo: "A Manuela chegou",
     ano: null,
     frase: "",
     layout: "destaque",
