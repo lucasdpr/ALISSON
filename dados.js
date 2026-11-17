@@ -167,6 +167,7 @@ const CAPITULOS = [
     layout: "destaque",
     videos: ["chegada-colo.mp4", "chegada-passeio.mp4"],
     fotos: [
+      "chegada-nascimento.jpg",
       "chegada-02.jpg",
       "chegada-03.jpg",
       "chegada-04.jpg",
