@@ -92,7 +92,7 @@ img{display:block}
 .destaque img{width:100%}
 .mini{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-top:20px;opacity:0;transition:opacity 1s .4s}
 .mini.vis{opacity:1}
-.mini img{width:min(44vw,300px);border-radius:10px}
+.mini img{width:min(44vw,300px);aspect-ratio:4/5;height:auto;object-fit:cover;border-radius:10px;align-self:flex-start}
 
 /* vídeo */
 .videos{display:flex;flex-wrap:wrap;justify-content:center;gap:18px;margin-top:40px}
@@ -101,10 +101,6 @@ img{display:block}
 .video{width:100%;display:block}
 
 .fim button{margin-top:2rem;background:none;border:1px solid rgba(255,255,255,.4);color:var(--ink);padding:.7rem 1.4rem;border-radius:99px;font:inherit;cursor:pointer}
-dialog{border:0;background:transparent;padding:0;max-width:95vw;max-height:95vh}
-dialog::backdrop{background:rgba(0,0,0,.9)}
-dialog img{max-width:95vw;max-height:90vh;border-radius:6px}
-dialog button{position:absolute;top:-2.4rem;right:0;background:none;border:0;color:#fff;font-size:2rem;cursor:pointer}
 
 @media (max-width:600px){
   .mural{grid-template-columns:repeat(2,1fr);gap:26px 18px}
@@ -175,3 +171,36 @@ dialog button{position:absolute;top:-2.4rem;right:0;background:none;border:0;col
 .aniv-foto-wrap{position:relative;border-radius:12px;overflow:hidden}
 #fogos-foto{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;mix-blend-mode:screen}
 .ceu-rodape{display:flex;flex-direction:column;align-items:center}
+
+/* ---------- abertura ---------- */
+.desde{font:600 clamp(1rem,2.6vw,1.2rem) Inter,sans-serif;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,248,240,.75);margin:1.2rem 0 0;opacity:0;transform:translateY(10px);transition:1s ease}
+.desde.on{opacity:1;transform:none}
+
+/* ---------- menu de capítulos ---------- */
+.menu-btn{position:fixed;left:clamp(12px,3vw,28px);bottom:clamp(12px,3vw,28px);z-index:20;background:rgba(20,14,12,.7);color:var(--ink);border:1px solid rgba(255,255,255,.25);
+  padding:.6rem 1rem;border-radius:99px;font:500 .9rem Inter,sans-serif;cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  opacity:0;pointer-events:none;transform:translateY(10px);transition:.4s ease}
+.menu-btn.on{opacity:1;pointer-events:auto;transform:none}
+.menu{position:fixed;left:clamp(12px,3vw,28px);bottom:calc(clamp(12px,3vw,28px) + 3.2rem);z-index:21;width:min(300px,calc(100vw - 32px));max-height:min(70vh,560px);overflow:auto;
+  background:rgba(24,17,14,.94);border:1px solid rgba(255,255,255,.15);border-radius:16px;padding:.5rem;box-shadow:0 20px 50px rgba(0,0,0,.6);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.menu ol{list-style:none;margin:0;padding:0}
+.menu button{display:flex;align-items:center;gap:.75rem;width:100%;text-align:left;background:none;border:0;color:var(--ink);font:500 1rem Inter,sans-serif;padding:.6rem .7rem;border-radius:10px;cursor:pointer}
+.menu button:hover,.menu button:focus-visible{background:rgba(255,255,255,.08)}
+.menu button.atual{background:rgba(255,138,122,.18);color:#ffb3a7}
+.menu .mn{flex:0 0 1.8rem;height:1.8rem;display:grid;place-items:center;border-radius:50%;background:rgba(255,255,255,.08);font-size:.8rem}
+.menu .especial button{font-weight:600;color:#ffd23f;border-top:1px solid rgba(255,255,255,.1);border-radius:0 0 10px 10px;margin-top:.3rem}
+
+/* ---------- galeria ampliada ---------- */
+#zoom{border:0;padding:0;margin:0;width:100vw;height:100svh;max-width:none;max-height:none;background:transparent;color:#fff;overflow:hidden}
+#zoom::backdrop{background:rgba(0,0,0,.92)}
+.zoom-palco{width:100%;height:100%;display:grid;place-items:center;padding:3.5rem 12px}
+.zoom-img{max-width:100%;max-height:100%;object-fit:contain;border-radius:6px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.zoom-fechar,.zoom-prev,.zoom-next{position:absolute;background:rgba(255,255,255,.12);border:0;color:#fff;cursor:pointer;border-radius:50%;width:48px;height:48px;font-size:1.8rem;line-height:1;display:grid;place-items:center}
+.zoom-fechar{top:12px;right:12px}
+.zoom-prev{left:12px;top:50%;transform:translateY(-50%)}
+.zoom-next{right:12px;top:50%;transform:translateY(-50%)}
+.zoom-fechar:hover,.zoom-prev:hover,.zoom-next:hover{background:rgba(255,255,255,.25)}
+.zoom-cont{position:absolute;top:22px;left:0;right:0;text-align:center;margin:0;font:500 .95rem Inter,sans-serif;opacity:.8;pointer-events:none}
+#zoom.unica .zoom-prev,#zoom.unica .zoom-next{display:none}
+@media (hover:none){.zoom-prev,.zoom-next{background:rgba(255,255,255,.08)}}
+@media (prefers-reduced-motion:reduce){.desde{opacity:1!important;transform:none!important}}

@@ -5,7 +5,7 @@
 const PESSOA = {
   nome: "Alisson Henrique",
   esposa: "Erica Ricardo",
-  filha: "Manuela",
+  filha: "Manuella",
   aniversario: "",   // formato "AAAA-MM-DD"; vazio = não mostra
 };
 
@@ -158,13 +158,18 @@ const CAPITULOS = [
     ],
   },
   {
-    titulo: "A Manuela chegou",
+    titulo: "A Manuella chegou",
     ano: null,
     frase: "",
     layout: "destaque",
     videos: ["chegada-colo.mp4", "chegada.mp4", "chegada-passeio.mp4"],
     fotos: [
       "chegada-02.jpg",
+      "chegada-03.jpg",
+      "chegada-04.jpg",
+      "chegada-05.jpg",
+      "chegada-06.jpg",
+      "chegada-07.jpg",
     ],
   },
   {
