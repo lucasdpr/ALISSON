@@ -133,6 +133,13 @@ CAPITULOS.forEach((c, i) => {
   historia.append(cap);
 });
 
+// ---------- vídeo final ----------
+if (typeof VIDEO_FINAL !== "undefined" && VIDEO_FINAL) {
+  const b = el("div", "video-box final"); b.append(video(VIDEO_FINAL));
+  b.append(el("p", "dica-som", "toque para ouvir 🔊"));
+  $("#final-video").append(b);
+}
+
 // ---------- revelar ao rolar ----------
 const rev = new IntersectionObserver((es) => es.forEach((e) => {
   if (e.isIntersecting) { e.target.classList.add("vis"); rev.unobserve(e.target); }

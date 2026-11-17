@@ -21,6 +21,9 @@ const PESSOA = {
 //            "destaque"  uma foto grande (as demais logo abaixo)
 //  fotos   : arquivos da pasta fotos/ — a PRIMEIRA é a foto principal do capítulo
 //  videos  : (opcional) lista de arquivos da pasta midia/
+// Vídeo que fecha o site (montagem com música)
+const VIDEO_FINAL = "retrospectiva.mp4";
+
 const CAPITULOS = [
   {
     titulo: "O começo",
@@ -111,6 +114,7 @@ const CAPITULOS = [
     ano: null,
     frase: "",
     layout: "mural",
+    videos: ["aventuras-show.mp4"],
     fotos: [
       "aventuras-01.jpg",
       "aventuras-02.jpg",
@@ -137,6 +141,7 @@ const CAPITULOS = [
     ano: null,
     frase: "",
     layout: "telacheia",
+    videos: ["espera-caminhada.mp4", "espera-estudio.mp4"],
     fotos: [
       "espera-01.jpg",
       "espera-02.jpg",
@@ -148,7 +153,7 @@ const CAPITULOS = [
     ano: null,
     frase: "",
     layout: "destaque",
-    videos: ["chegada-colo.mp4", "chegada.mp4"],
+    videos: ["chegada-colo.mp4", "chegada.mp4", "chegada-passeio.mp4"],
     fotos: [
       "chegada-02.jpg",
     ],
@@ -158,7 +163,7 @@ const CAPITULOS = [
     ano: null,
     frase: "",
     layout: "mosaico",
-    videos: ["familia.mp4", "familia-barco.mp4", "familia-arara.mp4", "familia-passeio.mp4"],
+    videos: ["familia.mp4", "familia-barco.mp4", "familia-arara.mp4", "familia-passeio.mp4", "familia-aniversario.mp4"],
     fotos: [
       "familia-01.jpg",
       "familia-02.jpg",
