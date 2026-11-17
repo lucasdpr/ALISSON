@@ -287,6 +287,47 @@ CAPITULOS.forEach((c, i) => {
   historia.append(cap);
 });
 
+// ---------- nossas conquistas ----------
+(function montarConquistas() {
+  const grade = $("#conq-grade");
+  if (!grade || typeof CONQUISTAS === "undefined") { $("#conquistas")?.remove(); return; }
+  const total = CONQUISTAS.length; let feitas = 0;
+  $("#conq-total").textContent = total;
+  const comFoto = CONQUISTAS.filter((c) => c.foto).map((c) => c.foto);
+  const toast = $("#toast"); let toastT = 0;
+  const avisar = (txt) => { toast.textContent = txt; toast.classList.add("on"); clearTimeout(toastT); toastT = setTimeout(() => toast.classList.remove("on"), 2600); };
+  CONQUISTAS.forEach((c, i) => {
+    const b = el("button", "conq"); b.type = "button";
+    b.setAttribute("aria-label", "Desbloquear conquista: " + c.titulo); b.setAttribute("aria-pressed", "false");
+    b.style.setProperty("--d", i * 120 + "ms");
+    const inn = el("span", "conq-in");
+    const frente = el("span", "conq-frente");
+    frente.append(el("span", "conq-icone", c.icone), el("span", "conq-cadeado", "🔒"), el("span", "conq-nome", c.titulo));
+    const verso = el("span", "conq-verso");
+    if (c.foto) { const im = el("img"); im.src = leve(c.foto); im.alt = c.titulo; im.loading = "lazy"; verso.append(im); }
+    else verso.append(el("span", "conq-embreve", c.icone + "\nfoto em breve"));
+    const faixa = el("span", "conq-faixa"); faixa.append(el("strong", "", c.icone + " " + c.titulo));
+    if (c.detalhe) faixa.append(el("small", "", c.detalhe));
+    verso.append(faixa);
+    inn.append(frente, verso); b.append(inn); grade.append(b);
+    b.onclick = () => {
+      if (b.classList.contains("on")) { if (c.foto) abrirGaleria(comFoto, comFoto.indexOf(c.foto)); return; }
+      b.classList.add("on"); b.setAttribute("aria-pressed", "true");
+      b.setAttribute("aria-label", c.titulo + " — desbloqueada (toque para ampliar)");
+      feitas++;
+      $("#conq-cont").textContent = feitas;
+      $(".conq-barra i").style.width = (feitas / total * 100) + "%";
+      const r = b.getBoundingClientRect(); explodirEm(r.left + r.width / 2, r.top + r.height / 2, 26);
+      avisar("🏆 Conquista desbloqueada: " + c.titulo);
+      if (feitas === total) setTimeout(() => {
+        $("#conq-final").classList.add("on");
+        const f = $("#conq-final").getBoundingClientRect();
+        for (let k = 0; k < 4; k++) setTimeout(() => explodirEm(innerWidth * (.2 + Math.random() * .6), f.top, 30), k * 220);
+      }, 900);
+    };
+  });
+})();
+
 // ---------- vídeo final ----------
 if (typeof VIDEO_FINAL !== "undefined" && VIDEO_FINAL) {
   const b = el("div", "video-box final"); b.append(video(VIDEO_FINAL));
@@ -298,7 +339,7 @@ if (typeof VIDEO_FINAL !== "undefined" && VIDEO_FINAL) {
 const rev = new IntersectionObserver((es) => es.forEach((e) => {
   if (e.isIntersecting) { e.target.classList.add("vis"); rev.unobserve(e.target); }
 }), { threshold: .2, rootMargin: "0px 0px -8% 0px" });
-$$(".abertura, .polaroid, .cel, .tela, .destaque, .mini, .carrossel-wrap, .video-box, .ad-box, .raspa-box, .pedido").forEach((n) => rev.observe(n));
+$$(".abertura, .polaroid, .cel, .tela, .destaque, .mini, .carrossel-wrap, .video-box, .ad-box, .raspa-box, .pedido, .conq").forEach((n) => rev.observe(n));
 
 // vídeos só tocam quando visíveis (economiza bateria/dados)
 const vio = new IntersectionObserver((es) => es.forEach((e) => {
@@ -341,6 +382,10 @@ $$(".capitulo").forEach((c, i) => {
   b.append(el("span", "mn", String(i + 1)), document.createTextNode(c.dataset.titulo));
   b.onclick = () => irPara(c); b.dataset.alvo = c.id; li.append(b); menuLista.append(li);
 });
+if ($("#conquistas")) {
+  const li = el("li", "especial"), b = el("button", "", "🏆 Nossas conquistas");
+  b.onclick = () => irPara($("#conquistas")); b.dataset.alvo = "conquistas"; li.append(b); menuLista.append(li);
+}
 {
   const li = el("li", "especial"), b = el("button", "", "🎂 A surpresa");
   b.onclick = () => irPara($("#aniversario")); b.dataset.alvo = "aniversario"; li.append(b); menuLista.append(li);
@@ -366,6 +411,7 @@ function mostrarAno(a) {
 }
 trocarFundo($(".capitulo")?.dataset.foto);
 new IntersectionObserver(([e]) => { if (e.isIntersecting) marcarMenu("aniversario"); }, { rootMargin: "-45% 0px -45% 0px" }).observe($("#aniversario"));
+if ($("#conquistas")) new IntersectionObserver(([e]) => { if (e.isIntersecting) { marcarMenu("conquistas"); trocarFundo(leve((CONQUISTAS.find((c) => c.foto) || {}).foto || "")); } }, { rootMargin: "-45% 0px -45% 0px" }).observe($("#conquistas"));
 const capObs = new IntersectionObserver((es) => es.forEach((e) => {
   if (!e.isIntersecting) return;
   trocarFundo(e.target.dataset.foto); mostrarAno(e.target.dataset.ano); marcarMenu(e.target.id); explodir(12);
