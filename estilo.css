@@ -95,7 +95,7 @@ img{display:block}
 .mini img{width:min(44vw,300px);aspect-ratio:4/5;height:auto;object-fit:cover;border-radius:10px;align-self:flex-start}
 
 /* vídeo */
-.videos{display:flex;flex-wrap:wrap;justify-content:center;gap:18px;margin-top:40px}
+.videos{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:18px;margin-top:40px}
 .video-box{width:min(300px,44vw);border-radius:14px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.55);opacity:0;transform:translateY(40px);transition:1s ease}
 .video-box.vis{opacity:1;transform:none}
 .video{width:100%;display:block}

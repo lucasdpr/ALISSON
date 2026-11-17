@@ -165,7 +165,7 @@ const CAPITULOS = [
     ano: null,
     frase: "",
     layout: "destaque",
-    videos: ["chegada-colo.mp4", "chegada.mp4", "chegada-passeio.mp4"],
+    videos: ["chegada-colo.mp4", "chegada-passeio.mp4"],
     fotos: [
       "chegada-02.jpg",
       "chegada-03.jpg",
