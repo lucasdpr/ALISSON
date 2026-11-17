@@ -3,28 +3,35 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Alisson — Nossa Linha do Tempo</title>
-<meta name="description" content="A linha do tempo de Alisson Henrique Ribeiro de Almeida e sua esposa.">
+<title>Alisson — Nossa História</title>
+<meta name="description" content="A história de Alisson Henrique Ribeiro de Almeida, contada em fotos desde 2010.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Playfair+Display:ital,wght@0,600;1,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
-<header class="hero">
-  <p class="eyebrow">Nossa história</p>
+<!-- fundo: a foto atual desfocada, trocando em crossfade -->
+<div class="fundo" aria-hidden="true"><div class="bg a"></div><div class="bg b"></div><div class="veu"></div></div>
+<canvas id="coracoes" aria-hidden="true"></canvas>
+<div class="progresso" aria-hidden="true"><span></span></div>
+<div class="contador" aria-live="polite"><small>ano</small><b id="ano">2010</b></div>
+
+<header class="cena intro">
+  <p class="maquina" id="maquina"></p>
   <h1 id="nome"></h1>
-  <p class="desde">Nossa história começou em <strong>2010</strong></p>
   <p class="aniv" id="aniv" hidden></p>
-  <a class="seta" href="#linha" aria-label="Ver linha do tempo">↓</a>
+  <p class="role">role devagar ↓</p>
 </header>
 
-<main id="linha" class="linha" aria-label="Linha do tempo"></main>
+<main id="historia"></main>
 
-<footer>Feito com amor ♥</footer>
+<section class="cena fim">
+  <p class="maquina">…e a história continua.</p>
+  <button id="replay">↺ ver de novo</button>
+</section>
 
 <dialog id="zoom"><img alt=""><button aria-label="Fechar">×</button></dialog>
-
 <script src="dados.js"></script>
 <script src="app.js"></script>
 </body>
