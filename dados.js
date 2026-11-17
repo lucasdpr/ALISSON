@@ -150,7 +150,6 @@ const CAPITULOS = [
     layout: "destaque",
     video: "chegada.mp4",
     fotos: [
-      "chegada-01.jpg",
       "chegada-02.jpg",
     ],
   },
