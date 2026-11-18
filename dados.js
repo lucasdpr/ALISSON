@@ -6,7 +6,7 @@ const PESSOA = {
   nome: "Alisson Henrique",
   esposa: "Erica Ricardo",
   filha: "Manuella",
-  aniversario: "",   // formato "AAAA-MM-DD"; vazio = não mostra
+  aniversario: "11-24",   // "MM-DD" (só dia e mês) ou "AAAA-MM-DD" (com ano, mostra a idade); vazio = não mostra
 };
 
 // A história é dividida em CAPÍTULOS (partes grandes, com tela de abertura própria)

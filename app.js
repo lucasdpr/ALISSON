@@ -23,15 +23,31 @@ digitar($("#maquina"), primeiroAno ? `Em ${primeiroAno}, começou a história de
   setTimeout(() => $("#desde").classList.add("on"), 1400);
 });
 
+// ---------- aniversário: contagem regressiva / "hoje é o seu dia" ----------
 if (PESSOA.aniversario) {
-  const [a, m, d] = PESSOA.aniversario.split("-").map(Number);
+  const partes = PESSOA.aniversario.split("-").map(Number);
+  const [a, m, d] = partes.length === 3 ? partes : [null, ...partes];   // aceita "MM-DD" ou "AAAA-MM-DD"
   const meses = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
   const h = new Date(); const hoje = new Date(h.getFullYear(), h.getMonth(), h.getDate());
-  let idade = h.getFullYear() - a; const prox = new Date(h.getFullYear(), m - 1, d);
-  if (prox < hoje) { prox.setFullYear(prox.getFullYear() + 1); idade++; }
-  const dias = Math.round((prox - hoje) / 864e5);
-  $("#aniv").textContent = `${d} de ${meses[m - 1]} · ` + (dias === 0 ? "🎉 hoje é o grande dia!" : `faltam ${dias} dia${dias > 1 ? "s" : ""} para os ${idade} anos`);
+  const desteAno = new Date(h.getFullYear(), m - 1, d);
+  const desde = Math.round((hoje - desteAno) / 864e5);       // dias desde o aniversário deste ano (negativo = ainda vai chegar)
+  const idade = a ? h.getFullYear() - a : null;
+  const data = `${d} de ${meses[m - 1]}`;
+  let txt;
+  if (desde === 0) {
+    txt = `🎉 Hoje é o seu dia, meu amor!${idade ? ` ${idade} anos!` : ""}`;
+    document.body.classList.add("dia-do-aniversario");
+  } else if (desde > 0 && desde <= 30) {
+    txt = `🎂 ${data} · feliz aniversário!`;                  // logo depois do dia, não vira "faltam 360 dias"
+  } else {
+    const prox = desde > 0 ? new Date(h.getFullYear() + 1, m - 1, d) : desteAno;
+    const dias = Math.round((prox - hoje) / 864e5);
+    const anos = a ? prox.getFullYear() - a : null;
+    txt = dias === 1 ? `🎂 ${data} · é amanhã!` : `🎂 ${data} · faltam ${dias} dias${anos ? ` para os ${anos} anos` : " para o seu aniversário"}`;
+  }
+  $("#aniv").textContent = txt;
   $("#aniv").hidden = false;
+  if (desde >= 0 && desde <= 30) $("#dica-surpresa").hidden = false;   // no dia (e depois): avisa que tem surpresa
 }
 
 // ---------- helpers de mídia ----------
