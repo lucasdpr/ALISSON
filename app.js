@@ -15,7 +15,8 @@ $("#nome").textContent = PESSOA.nome;
 if (PESSOA.esposa) $("#casal").textContent = "& " + PESSOA.esposa;
 $("#assinatura").textContent = [PESSOA.nome.split(" ")[0], PESSOA.esposa?.split(" ")[0], PESSOA.filha].filter(Boolean).join(", ").replace(/, ([^,]*)$/, " e $1");
 const primeiroAno = CAPITULOS.find((c) => c.ano)?.ano;
-if (primeiroAno) { const anos = new Date().getFullYear() - primeiroAno; $("#desde").textContent = `${anos} anos de história ❤️`; }
+if (primeiroAno) { const anos = new Date().getFullYear() - primeiroAno; $("#desde").textContent = `${anos} ${typeof FRASE_ABERTURA !== "undefined" ? FRASE_ABERTURA : "anos de história"} ❤️`; }
+if (typeof FRASE_FINAL !== "undefined") $("#frase-final").textContent = FRASE_FINAL;
 digitar($("#maquina"), primeiroAno ? `Em ${primeiroAno}, começou a história de…` : "Esta é a história de…").then(() => {
   $("#nome").classList.add("on");
   setTimeout(() => $("#casal").classList.add("on"), 700);
@@ -256,23 +257,45 @@ function antesDepois([antes, depois]) {
 
 // ---------- monta capítulos ----------
 const historia = $("#historia");
-let anoCorrente = primeiroAno || "";
+let anoCorrente = primeiroAno || "", nParte = 0, menuAtual = "";
+// tela de abertura de um capítulo grande (Capítulo I, II… e o Epílogo)
+function aberturaParte(p, foto, ano) {
+  const s = el("section", "parte");
+  s.id = p.id || "parte-" + (++nParte);
+  s.dataset.titulo = p.titulo; s.dataset.numero = p.numero;
+  s.dataset.foto = foto || ""; s.dataset.ano = ano || ""; s.dataset.menu = s.id;
+  const inn = el("div", "parte-in");
+  inn.append(el("p", "parte-num", p.numero), el("span", "parte-orn", "✦"), el("h2", "parte-titulo", p.titulo));
+  if (p.subtitulo) inn.append(el("p", "parte-sub", p.subtitulo));
+  s.append(inn);
+  return s;
+}
+const fotoDe = (c) => { const v0 = (c.videos || [])[0]; return c.fotos[0] ? leve(c.fotos[0]) : v0 ? "midia/" + v0.replace(/\.mp4$/, ".jpg") : ""; };
 CAPITULOS.forEach((c, i) => {
   if (c.ano) anoCorrente = c.ano;
-  const cap = el("section", "capitulo layout-" + c.layout);
+  if (c.parte) historia.append(aberturaParte(c.parte, fotoDe(c), c.ano));
+  const cap = el("section", "capitulo layout-" + c.layout + (c.titulo ? "" : " continuacao"));
   cap.id = "cap-" + (i + 1);
-  cap.dataset.titulo = c.titulo;
+  cap.dataset.titulo = c.titulo || "";
+  if (c.titulo) menuAtual = cap.id;
+  cap.dataset.menu = menuAtual;
   galeriaAtual = c.fotos;
   cap.dataset.ano = c.ano || "";
-  const v0 = (c.videos || [])[0];
-  cap.dataset.foto = c.fotos[0] ? leve(c.fotos[0]) : v0 ? "midia/" + v0.replace(/\.mp4$/, ".jpg") : "";
+  cap.dataset.foto = fotoDe(c);
 
-  const ab = el("header", "abertura");
-  ab.append(el("p", "num", `capítulo ${i + 1}`));
-  if (c.ano) ab.append(el("div", "marco", c.ano));
-  ab.append(el("h2", "", c.titulo));
-  if (c.frase) ab.append(el("p", "frase", c.frase));
-  cap.append(ab);
+  if (c.titulo) {
+    const ab = el("header", "abertura");
+    if (c.ano) ab.append(el("div", "marco", c.ano));
+    ab.append(el("h2", "", c.titulo));
+    if (c.frase) ab.append(el("p", "frase", c.frase));
+    cap.append(ab);
+  } else {
+    // continua o subcapítulo anterior: só um enfeite e uma legenda pequena
+    const ct = el("header", "continua");
+    ct.append(el("span", "continua-orn", "✦ ✦ ✦"));
+    if (c.rotulo) ct.append(el("p", "rotulo", c.rotulo));
+    cap.append(ct);
+  }
 
   const corpo = el("div", "corpo");
   if (c.antesDepois) corpo.append(antesDepois(c.antesDepois));
@@ -286,6 +309,9 @@ CAPITULOS.forEach((c, i) => {
   cap.append(corpo);
   historia.append(cap);
 });
+
+// epílogo: abre o grande final do aniversário
+if (typeof EPILOGO !== "undefined") $("#aniversario").before(aberturaParte({ ...EPILOGO, id: "epilogo" }, "fotos/p/" + (typeof ANIVERSARIO !== "undefined" ? ANIVERSARIO.foto : ""), ""));
 
 // ---------- nossas conquistas ----------
 (function montarConquistas() {
@@ -339,7 +365,7 @@ if (typeof VIDEO_FINAL !== "undefined" && VIDEO_FINAL) {
 const rev = new IntersectionObserver((es) => es.forEach((e) => {
   if (e.isIntersecting) { e.target.classList.add("vis"); rev.unobserve(e.target); }
 }), { threshold: .2, rootMargin: "0px 0px -8% 0px" });
-$$(".abertura, .polaroid, .cel, .tela, .destaque, .mini, .carrossel-wrap, .video-box, .ad-box, .raspa-box, .pedido, .conq").forEach((n) => rev.observe(n));
+$$(".abertura, .continua, .parte, .polaroid, .cel, .tela, .destaque, .mini, .carrossel-wrap, .video-box, .ad-box, .raspa-box, .pedido, .conq").forEach((n) => rev.observe(n));
 
 // vídeos só tocam quando visíveis (economiza bateria/dados)
 const vio = new IntersectionObserver((es) => es.forEach((e) => {
@@ -377,19 +403,19 @@ z.addEventListener("touchend", (e) => {
 // ---------- menu de capítulos ----------
 const menuBtn = $("#menu-btn"), menu = $("#menu"), menuLista = $("ol", menu);
 const irPara = (alvo) => { fecharMenu(); alvo.scrollIntoView({ behavior: calmo ? "auto" : "smooth" }); };
-$$(".capitulo").forEach((c, i) => {
-  const li = el("li"), b = el("button", "", "");
-  b.append(el("span", "mn", String(i + 1)), document.createTextNode(c.dataset.titulo));
-  b.onclick = () => irPara(c); b.dataset.alvo = c.id; li.append(b); menuLista.append(li);
+$$(".parte, .capitulo, #conquistas").forEach((s) => {
+  let li, b;
+  if (s.classList.contains("parte")) {
+    const romano = s.dataset.numero.replace(/^Capítulo\s*/i, "");
+    li = el("li", "grupo" + (s.id === "epilogo" ? " especial" : "")); b = el("button");
+    b.append(el("span", "mn", s.id === "epilogo" ? "🎂" : romano), document.createTextNode(s.dataset.titulo));
+  } else if (s.id === "conquistas") {
+    li = el("li", "sub"); b = el("button", "", "🏆 " + $("#conq-h").textContent);
+  } else if (s.dataset.titulo) {
+    li = el("li", "sub"); b = el("button", "", s.dataset.titulo);
+  } else return; // blocos de continuação não entram no menu
+  b.onclick = () => irPara(s); b.dataset.alvo = s.id; li.append(b); menuLista.append(li);
 });
-if ($("#conquistas")) {
-  const li = el("li", "especial"), b = el("button", "", "🏆 Nossas conquistas");
-  b.onclick = () => irPara($("#conquistas")); b.dataset.alvo = "conquistas"; li.append(b); menuLista.append(li);
-}
-{
-  const li = el("li", "especial"), b = el("button", "", "🎂 A surpresa");
-  b.onclick = () => irPara($("#aniversario")); b.dataset.alvo = "aniversario"; li.append(b); menuLista.append(li);
-}
 function fecharMenu() { menu.hidden = true; menuBtn.setAttribute("aria-expanded", "false"); }
 menuBtn.onclick = (e) => { e.stopPropagation(); const abrir = menu.hidden; menu.hidden = !abrir; menuBtn.setAttribute("aria-expanded", String(abrir)); };
 document.addEventListener("click", (e) => { if (!menu.hidden && !menu.contains(e.target)) fecharMenu(); });
@@ -410,13 +436,14 @@ function mostrarAno(a) {
   anoEl.textContent = a; anoEl.classList.remove("vira"); void anoEl.offsetWidth; anoEl.classList.add("vira");
 }
 trocarFundo($(".capitulo")?.dataset.foto);
-new IntersectionObserver(([e]) => { if (e.isIntersecting) marcarMenu("aniversario"); }, { rootMargin: "-45% 0px -45% 0px" }).observe($("#aniversario"));
+new IntersectionObserver(([e]) => { if (e.isIntersecting) marcarMenu("epilogo"); }, { rootMargin: "-45% 0px -45% 0px" }).observe($("#aniversario"));
 if ($("#conquistas")) new IntersectionObserver(([e]) => { if (e.isIntersecting) { marcarMenu("conquistas"); trocarFundo(leve((CONQUISTAS.find((c) => c.foto) || {}).foto || "")); } }, { rootMargin: "-45% 0px -45% 0px" }).observe($("#conquistas"));
 const capObs = new IntersectionObserver((es) => es.forEach((e) => {
   if (!e.isIntersecting) return;
-  trocarFundo(e.target.dataset.foto); mostrarAno(e.target.dataset.ano); marcarMenu(e.target.id); explodir(12);
+  trocarFundo(e.target.dataset.foto); mostrarAno(e.target.dataset.ano); marcarMenu(e.target.dataset.menu || e.target.id);
+  if (!e.target.classList.contains("continuacao")) explodir(12);
 }), { rootMargin: "-45% 0px -45% 0px" });
-$$(".capitulo").forEach((c) => capObs.observe(c));
+$$(".capitulo, .parte").forEach((c) => capObs.observe(c));
 
 addEventListener("scroll", () => {
   const max = document.documentElement.scrollHeight - innerHeight;

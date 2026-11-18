@@ -9,7 +9,11 @@ const PESSOA = {
   aniversario: "",   // formato "AAAA-MM-DD"; vazio = não mostra
 };
 
-// A história é dividida em CAPÍTULOS, na ordem desta lista.
+// A história é dividida em CAPÍTULOS (partes grandes, com tela de abertura própria)
+// e SUBCAPÍTULOS, na ordem desta lista.
+//  parte   : (só no 1º subcapítulo de cada capítulo) abre um capítulo novo
+//  titulo  : título do subcapítulo — vazio ("") = continua o subcapítulo anterior
+//  rotulo  : legenda pequena, escrita à mão, para os blocos que continuam
 //  titulo  : nome do capítulo
 //  ano     : ex. 2014 (ou null se não souber) — aparece grande na abertura e no contador
 //  frase   : uma frase curta que abre o capítulo (opcional)
@@ -29,7 +33,8 @@ const VIDEO_FINAL = "retrospectiva.mp4";
 
 const CAPITULOS = [
   {
-    titulo: "O começo",
+    parte: { numero: "Capítulo I", titulo: "Quando nossos caminhos se encontraram", subtitulo: "2010 — O começo de tudo" },
+    titulo: "Tudo começou a florescer",
     ano: 2010,
     frase: "Um beijo, e tudo mudou.",
     layout: "mural",
@@ -54,7 +59,8 @@ const CAPITULOS = [
     ],
   },
   {
-    titulo: "Crescendo juntos",
+    titulo: "",
+    rotulo: "e fomos crescendo juntos",
     ano: null,
     frase: "",
     layout: "mosaico",
@@ -75,7 +81,7 @@ const CAPITULOS = [
     ],
   },
   {
-    titulo: "Uma conquista",
+    titulo: "Um sonho que virou realidade",
     ano: null,
     frase: "",
     layout: "destaque",
@@ -84,7 +90,8 @@ const CAPITULOS = [
     ],
   },
   {
-    titulo: "O pedido",
+    parte: { numero: "Capítulo II", titulo: "Escolher você, todos os dias", subtitulo: "O casamento e a nossa promessa" },
+    titulo: "O começo de um para sempre",
     ano: null,
     frase: "Quer casar comigo?",
     layout: "pedido",
@@ -92,7 +99,8 @@ const CAPITULOS = [
     fotos: [],
   },
   {
-    titulo: "O ensaio",
+    titulo: "",
+    rotulo: "nosso ensaio",
     ano: null,
     frase: "",
     layout: "telacheia",
@@ -103,7 +111,7 @@ const CAPITULOS = [
     ],
   },
   {
-    titulo: "O casamento",
+    titulo: "O dia em que dissemos sim",
     ano: null,
     frase: "",
     layout: "carrossel",
@@ -121,7 +129,8 @@ const CAPITULOS = [
     ],
   },
   {
-    titulo: "Mais aventuras",
+    titulo: "",
+    rotulo: "e as aventuras continuaram",
     ano: null,
     frase: "",
     layout: "mural",
@@ -139,9 +148,10 @@ const CAPITULOS = [
     ],
   },
   {
-    titulo: "A notícia",
+    parte: { numero: "Capítulo III", titulo: "O amor que já não cabia em dois", subtitulo: "A espera pela Manu" },
+    titulo: "Uma nova vida a caminho",
     ano: null,
-    frase: "Uma mensagem que mudou tudo…",
+    frase: "",
     layout: "raspadinha",
     revelacao: "Oi, papai! 💗",
     fotos: [
@@ -149,7 +159,8 @@ const CAPITULOS = [
     ],
   },
   {
-    titulo: "A espera",
+    titulo: "",
+    rotulo: "a espera",
     ano: null,
     frase: "",
     layout: "telacheia",
@@ -161,7 +172,8 @@ const CAPITULOS = [
     ],
   },
   {
-    titulo: "A Manuella chegou",
+    parte: { numero: "Capítulo IV", titulo: "O nosso maior presente", subtitulo: "A chegada da nossa filha" },
+    titulo: "O amor ganhou um novo nome",
     ano: null,
     frase: "",
     layout: "destaque",
@@ -177,7 +189,8 @@ const CAPITULOS = [
     ],
   },
   {
-    titulo: "Nossa família",
+    parte: { numero: "Capítulo V", titulo: "A vida que sonhamos e construímos", subtitulo: "Nossa família, nossas conquistas" },
+    titulo: "Nosso mundo em três corações",
     ano: null,
     frase: "",
     layout: "mosaico",
@@ -211,7 +224,8 @@ const CAPITULOS = [
     ],
   },
   {
-    titulo: "Por aí, nós três",
+    titulo: "",
+    rotulo: "por aí, nós três",
     ano: null,
     frase: "",
     layout: "videos",
@@ -230,7 +244,8 @@ const CAPITULOS = [
     fotos: [],
   },
   {
-    titulo: "Hoje",
+    titulo: "",
+    rotulo: "hoje",
     ano: null,
     frase: "",
     layout: "carrossel",
@@ -247,6 +262,13 @@ const CAPITULOS = [
     ],
   },
 ];
+
+// ============================================================
+//  EPÍLOGO (abre o grande final) e frase de encerramento
+// ============================================================
+const EPILOGO = { numero: "Epílogo", titulo: "E ainda é só o começo", subtitulo: "Uma carta para o amor da minha vida" };
+const FRASE_FINAL = "Nossa história continua…";
+const FRASE_ABERTURA = "anos de nós";   // aparece como "16 anos de nós" (o número é calculado)
 
 // ============================================================
 //  NOSSAS CONQUISTAS — troféus que ele toca para desbloquear
