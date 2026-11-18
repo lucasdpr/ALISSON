@@ -17,7 +17,11 @@ $("#assinatura").textContent = [PESSOA.nome.split(" ")[0], PESSOA.esposa?.split(
 const primeiroAno = CAPITULOS.find((c) => c.ano)?.ano;
 if (primeiroAno) { const anos = new Date().getFullYear() - primeiroAno; $("#desde").textContent = `${anos} ${typeof FRASE_ABERTURA !== "undefined" ? FRASE_ABERTURA : "anos de história"} ❤️`; }
 if (typeof FRASE_FINAL !== "undefined") $("#frase-final").textContent = FRASE_FINAL;
-digitar($("#maquina"), primeiroAno ? `Em ${primeiroAno}, começou a história de…` : "Esta é a história de…").then(() => {
+const temCelebra = typeof FRASE_INICIAL !== "undefined" && FRASE_INICIAL;
+if (temCelebra) { $("#celebrando").textContent = FRASE_INICIAL; requestAnimationFrame(() => $("#celebrando").classList.add("on")); }
+if (typeof DESPEDIDA !== "undefined") DESPEDIDA.forEach((t, i) => $("#despedida").append(el("p", i ? "te-amamos" : "familinha", t)));
+new Promise((ok) => setTimeout(ok, temCelebra && !calmo ? 1700 : 0)).then(() =>
+digitar($("#maquina"), primeiroAno ? `Em ${primeiroAno}, começou a história de…` : "Esta é a história de…")).then(() => {
   $("#nome").classList.add("on");
   setTimeout(() => $("#casal").classList.add("on"), 700);
   setTimeout(() => $("#desde").classList.add("on"), 1400);
@@ -109,7 +113,7 @@ const LAYOUTS = {
   mural(c, box) {
     const [prim, ...resto] = c.fotos;
     const m = el("div", "mural");
-    const g = polaroid(prim, 0, c.titulo, "min(420px, 88vw)"); g.classList.add("grande"); m.append(g);
+    const g = polaroid(prim, 0, c.legenda ?? c.titulo, "min(420px, 88vw)"); g.classList.add("grande"); m.append(g);
     resto.forEach((f, i) => m.append(polaroid(f, i + 1)));
     box.append(m);
   },
@@ -289,7 +293,7 @@ function aberturaParte(p, foto, ano) {
 const fotoDe = (c) => { const v0 = (c.videos || [])[0]; return c.fotos[0] ? leve(c.fotos[0]) : v0 ? "midia/" + v0.replace(/\.mp4$/, ".jpg") : ""; };
 CAPITULOS.forEach((c, i) => {
   if (c.ano) anoCorrente = c.ano;
-  if (c.parte) historia.append(aberturaParte(c.parte, fotoDe(c), c.ano));
+  if (c.parte) { const pa = aberturaParte(c.parte, fotoDe(c), c.ano); historia.append(pa); menuAtual = pa.id; }
   const cap = el("section", "capitulo layout-" + c.layout + (c.titulo ? "" : " continuacao"));
   cap.id = "cap-" + (i + 1);
   cap.dataset.titulo = c.titulo || "";
@@ -305,7 +309,7 @@ CAPITULOS.forEach((c, i) => {
     ab.append(el("h2", "", c.titulo));
     if (c.frase) ab.append(el("p", "frase", c.frase));
     cap.append(ab);
-  } else {
+  } else if (c.rotulo) {
     // continua o subcapítulo anterior: só um enfeite e uma legenda pequena
     const ct = el("header", "continua");
     ct.append(el("span", "continua-orn", "✦ ✦ ✦"));
@@ -329,13 +333,42 @@ CAPITULOS.forEach((c, i) => {
 // epílogo: abre o grande final do aniversário
 if (typeof EPILOGO !== "undefined") $("#aniversario").before(aberturaParte({ ...EPILOGO, id: "epilogo" }, "fotos/p/" + (typeof ANIVERSARIO !== "undefined" ? ANIVERSARIO.foto : ""), ""));
 
+// ---------- mosaicos sem buracos: se a última linha ficar incompleta, alonga algumas fotos ----------
+function fecharMosaicos() {
+  $$(".mosaico").forEach((g) => {
+    $$(".cel.ajuste", g).forEach((c) => { c.classList.toggle("ajuste", false); c.classList.toggle("alta", false); c.classList.toggle("largo", false); });
+    const buracos = () => {
+      const cs = getComputedStyle(g), cols = cs.gridTemplateColumns.split(" ").length;
+      const gap = parseFloat(cs.rowGap) || 0, cg = parseFloat(cs.columnGap) || 0, rowH = parseFloat(cs.gridAutoRows);
+      const gr = g.getBoundingClientRect(), colW = (gr.width - (cols - 1) * cg) / cols;
+      let area = 0;
+      [...g.children].forEach((x) => { const r = x.getBoundingClientRect(); area += Math.round((r.width + cg) / (colW + cg)) * Math.round((r.height + gap) / (rowH + gap)); });
+      return cols * Math.round((gr.height + gap) / (rowH + gap)) - area;
+    };
+    // testa alongar (alta) ou alargar (largo) fotos, de trás pra frente, e só mantém o que diminui os buracos
+    let h = buracos();
+    const normais = [...g.children].filter((c) => !c.classList.contains("g") && !c.classList.contains("alta")).reverse();
+    for (let k = 0; k < normais.length && h > 0; k++) {
+      for (const tipo of ["alta", "largo"]) {
+        normais[k].classList.add(tipo, "ajuste");
+        const h2 = buracos();
+        if (h2 < h) { h = h2; break; }
+        normais[k].classList.toggle(tipo, false); normais[k].classList.toggle("ajuste", false);
+      }
+    }
+  });
+}
+fecharMosaicos();
+let tMos = 0; addEventListener("resize", () => { clearTimeout(tMos); tMos = setTimeout(fecharMosaicos, 200); });
+
 // ---------- nossas conquistas ----------
 (function montarConquistas() {
   const grade = $("#conq-grade");
   if (!grade || typeof CONQUISTAS === "undefined") { $("#conquistas")?.remove(); return; }
   const total = CONQUISTAS.length; let feitas = 0;
   $("#conq-total").textContent = total;
-  const comFoto = CONQUISTAS.filter((c) => c.foto).map((c) => c.foto);
+  const fotosDe = (c) => c.fotos || (c.foto ? [c.foto] : []);
+  const comFoto = CONQUISTAS.flatMap(fotosDe);
   const toast = $("#toast"); let toastT = 0;
   const avisar = (txt) => { toast.textContent = txt; toast.classList.add("on"); clearTimeout(toastT); toastT = setTimeout(() => toast.classList.remove("on"), 2600); };
   CONQUISTAS.forEach((c, i) => {
@@ -346,14 +379,20 @@ if (typeof EPILOGO !== "undefined") $("#aniversario").before(aberturaParte({ ...
     const frente = el("span", "conq-frente");
     frente.append(el("span", "conq-icone", c.icone), el("span", "conq-cadeado", "🔒"), el("span", "conq-nome", c.titulo));
     const verso = el("span", "conq-verso");
-    if (c.foto) { const im = el("img"); im.src = leve(c.foto); im.alt = c.titulo; im.loading = "lazy"; if (c.enquadrar) im.style.objectPosition = c.enquadrar; verso.append(im); }
-    else verso.append(el("span", "conq-embreve", c.icone + "\nfoto em breve"));
+    const fs = fotosDe(c);
+    fs.forEach((f, k) => { const im = el("img", k ? "" : "ativa"); im.src = leve(f); im.alt = c.titulo; im.loading = "lazy"; if (c.enquadrar) im.style.objectPosition = c.enquadrar; verso.append(im); });
+    if (fs.length > 1) verso.classList.add("varias");
+    if (!fs.length) verso.append(el("span", "conq-embreve", c.icone + "\nfoto em breve"));
     const faixa = el("span", "conq-faixa"); faixa.append(el("strong", "", c.icone + " " + c.titulo));
     if (c.detalhe) faixa.append(el("small", "", c.detalhe));
     verso.append(faixa);
     inn.append(frente, verso); b.append(inn); grade.append(b);
     b.onclick = () => {
-      if (b.classList.contains("on")) { if (c.foto) abrirGaleria(comFoto, comFoto.indexOf(c.foto)); return; }
+      if (b.classList.contains("on")) { if (fs.length) abrirGaleria(comFoto, comFoto.indexOf($("img.ativa", verso)?.src.split("/").pop() || fs[0])); return; }
+      if (fs.length > 1 && !calmo) {   // troca as fotos do card a cada 2,6 s
+        let k = 0; const ims = $$("img", verso);
+        setInterval(() => { ims[k].classList.remove("ativa"); k = (k + 1) % ims.length; ims[k].classList.add("ativa"); }, 2600);
+      }
       b.classList.add("on"); b.setAttribute("aria-pressed", "true");
       b.setAttribute("aria-label", c.titulo + " — desbloqueada (toque para ampliar)");
       feitas++;

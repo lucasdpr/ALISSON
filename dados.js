@@ -34,9 +34,10 @@ const VIDEO_FINAL = "retrospectiva.mp4";
 const CAPITULOS = [
   {
     parte: { numero: "Capítulo I", titulo: "Quando nossos caminhos se encontraram", subtitulo: "2010 — O começo de tudo" },
-    titulo: "Tudo começou a florescer",
+    titulo: "",               // sem título: logo depois do "Capítulo I" já vêm as fotos
+    legenda: "2010",          // escrito na polaroid grande
     ano: 2010,
-    frase: "Um beijo, e tudo mudou.",
+    frase: "",
     layout: "mural",
     fotos: [
       "2010-06.jpg",
@@ -56,6 +57,8 @@ const CAPITULOS = [
       "2010-15.jpg",
       "2010-16.jpg",
       "2010-17.jpg",
+      "2010-18.jpg",
+      "2010-19.jpg",
     ],
   },
   {
@@ -78,19 +81,13 @@ const CAPITULOS = [
       "namoro-11.jpg",
       "namoro-12.jpg",
       "namoro-13.jpg",
+      "namoro-14.jpg",
+      "namoro-15.jpg",
+      "namoro-16.jpg",
     ],
   },
   {
-    titulo: "Um sonho que virou realidade",
-    ano: null,
-    frase: "",
-    layout: "destaque",
-    fotos: [
-      "formatura-01.jpg",
-    ],
-  },
-  {
-    parte: { numero: "Capítulo II", titulo: "Escolher você, todos os dias", subtitulo: "O casamento e a nossa promessa" },
+    parte: { numero: "Capítulo II", titulo: "A vida que sonhamos e construímos juntos", subtitulo: "Nossa família, nossas conquistas…" },
     titulo: "O começo de um para sempre",
     ano: null,
     frase: "Quer casar comigo?",
@@ -111,7 +108,7 @@ const CAPITULOS = [
     ],
   },
   {
-    titulo: "O dia em que dissemos sim",
+    titulo: "O melhor SIM das nossas vidas",
     ano: null,
     frase: "",
     layout: "carrossel",
@@ -136,7 +133,6 @@ const CAPITULOS = [
     layout: "mural",
     videos: ["aventuras-show.mp4"],
     fotos: [
-      "aventuras-01.jpg",
       "aventuras-02.jpg",
       "aventuras-03.jpg",
       "aventuras-04.jpg",
@@ -145,6 +141,11 @@ const CAPITULOS = [
       "aventuras-07.jpg",
       "aventuras-08.jpg",
       "aventuras-09.jpg",
+      "aventuras-10.jpg",
+      "aventuras-11.jpg",
+      "aventuras-12.jpg",
+      "aventuras-13.jpg",
+      "aventuras-14.jpg",
     ],
   },
   {
@@ -189,7 +190,7 @@ const CAPITULOS = [
     ],
   },
   {
-    parte: { numero: "Capítulo V", titulo: "A vida que sonhamos e construímos", subtitulo: "Nossa família, nossas conquistas" },
+    parte: { numero: "Capítulo V", titulo: "Escolher você, todos os dias", subtitulo: "" },
     titulo: "Nosso mundo em três corações",
     ano: null,
     frase: "",
@@ -266,16 +267,19 @@ const CAPITULOS = [
 // ============================================================
 //  EPÍLOGO (abre o grande final) e frase de encerramento
 // ============================================================
-const EPILOGO = { numero: "Epílogo", titulo: "E ainda é só o começo", subtitulo: "Uma carta para o amor da minha vida" };
+const EPILOGO = { numero: "Epílogo", titulo: "E ainda é só o começo", subtitulo: "" };
+const FRASE_INICIAL = "Celebrando a vida com você, meu amor!";   // primeira frase do site
+const DESPEDIDA = ["Nossa familinha!", "Te amamos!!!"];          // depois de "Alisson, Erica e Manuella"
 const FRASE_FINAL = "Nossa história continua…";
 const FRASE_ABERTURA = "anos de nós";   // aparece como "16 anos de nós" (o número é calculado)
 
 // ============================================================
 //  NOSSAS CONQUISTAS — troféus que ele toca para desbloquear
-//  (foto vazia = aparece "foto em breve"; enquadrar = qual parte da foto fica no centro do card)
+//  (foto vazia = aparece "foto em breve"; fotos: [...] = várias fotos que vão trocando no card;
+//   enquadrar = qual parte da foto fica no centro do card)
 // ============================================================
 const CONQUISTAS = [
-  { icone: "🎓", titulo: "A formatura da Erica", foto: "formatura-01.jpg" },
+  { icone: "🎓", titulo: "Nossas formaturas", fotos: ["formatura-01.jpg", "formatura-alisson-01.jpg", "formatura-alisson-02.jpg"] },
   { icone: "💍", titulo: "O casamento", foto: "casamento-01.jpg" },
   { icone: "🏠", titulo: "A nossa casa", foto: "casa-chave.jpg", enquadrar: "38% 72%" },
   { icone: "👶", titulo: "A Manuella", detalhe: "a maior de todas", foto: "familia-01.jpg" },

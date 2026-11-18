@@ -55,12 +55,13 @@ img{display:block}
 .foto img{width:100%;height:100%;object-fit:cover;filter:sepia(1) contrast(.8) brightness(1.3);transition:filter 2s ease .4s}
 .polaroid.vis .foto img{filter:none}
 .legenda{font:700 1.5rem/1.2 Caveat,cursive;color:#3a2a22;text-align:center;padding:.4rem .4rem .7rem;min-height:2.6rem}
-.mural{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:34px 26px;align-items:start}
+.mural{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:34px 26px;align-items:start}
+@media (max-width:900px){.mural{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .mural .grande{grid-column:1/-1;width:min(420px,88vw);justify-self:center;padding:14px 14px 0;margin-bottom:2rem}
 .mural .grande .legenda{font-size:2rem}
 
 /* mosaico */
-.mosaico{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));grid-auto-rows:170px;grid-auto-flow:dense;gap:8px}
+.mosaico{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:190px;grid-auto-flow:dense;gap:8px}
 .cel{overflow:hidden;border-radius:6px;opacity:0;transform:scale(.85);transition:opacity .7s ease var(--d),transform .9s cubic-bezier(.2,.8,.2,1) var(--d)}
 .cel.vis{opacity:1;transform:none}
 .cel.g{grid-column:span 2;grid-row:span 2}.cel.alta{grid-row:span 2}
@@ -409,3 +410,22 @@ img{display:block}
 .dica-surpresa{font:600 clamp(1.3rem,4vw,1.6rem) Caveat,cursive;color:#ff8fb1;margin:.6rem 0 0;animation:flutua 2.4s ease-in-out infinite}
 .dia-do-aniversario .aniv{font-size:clamp(1.3rem,4vw,1.7rem)}
 @media (prefers-reduced-motion:reduce){.aniv{opacity:1!important;transform:none!important}.dica-surpresa{animation:none}}
+
+/* ---------- abertura: "Celebrando a vida com você" ---------- */
+.celebrando{font:400 clamp(1.7rem,6vw,2.8rem)/1.2 Lobster,cursive;margin:0 0 1.4rem;max-width:16em;
+  background:linear-gradient(90deg,#ffd23f,#ff8fb1,#ffd23f);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 14px rgba(255,210,63,.35));opacity:0;transform:translateY(14px) scale(.96);transition:opacity 1.2s ease,transform 1.4s cubic-bezier(.2,.8,.2,1)}
+.celebrando.on{opacity:1;transform:none;animation:arcoiris 5s linear infinite}
+
+/* ---------- despedida no final ---------- */
+.despedida{margin-top:.6rem}
+.familinha{font:700 clamp(1.8rem,6vw,2.6rem) Caveat,cursive;color:#ffd23f;margin:.4rem 0 0}
+.te-amamos{font:400 clamp(2.2rem,8vw,3.6rem)/1.1 Lobster,cursive;margin:.2rem 0 0;
+  background:linear-gradient(90deg,#ff5c8a,#ffd23f,#ff5c8a);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:arcoiris 4s linear infinite;filter:drop-shadow(0 0 16px rgba(255,92,138,.4))}
+
+/* ---------- conquista com várias fotos ---------- */
+.conq-verso.varias img{opacity:0;transition:opacity 1s ease}
+.conq-verso.varias img.ativa{opacity:1}
+@media (prefers-reduced-motion:reduce){.celebrando{opacity:1!important;transform:none!important;animation:none!important}.te-amamos{animation:none}}
+.cel.largo{grid-column:span 2}
