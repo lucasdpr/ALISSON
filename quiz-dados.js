@@ -6,27 +6,27 @@
 // ============================================================
 const QUIZ = [
   { t: "Em que dia demos nosso primeiro beijo?", tipo: "certa", c: 1,
-    o: ["12/03/2010", "13/03/2010 ❤️", "15/03/2010", "20/03/2010"],
+    o: ["12/03/2010", "13/03/2010", "15/03/2010", "20/03/2010"],
     msg: "13/03/2010. O dia em que tudo começou, e a data que a gente nunca esquece! ❤️" },
 
   { t: "Qual é a data do nosso aniversário de namoro?", tipo: "certa", c: 2,
-    o: ["13/06/2010", "18/06/2010", "20/06/2010 ❤️", "23/06/2010"],
+    o: ["13/06/2010", "18/06/2010", "20/06/2010", "23/06/2010"],
     msg: "20/06/2010. Foi aí que o nosso começo virou namoro! 💕" },
 
   { t: "Qual é a data do nosso casamento?", tipo: "certa", c: 2,
-    o: ["13/03/2010", "10/03/2021", "13/03/2021 ❤️", "20/03/2021"],
+    o: ["13/03/2010", "10/03/2021", "13/03/2021", "20/03/2021"],
     msg: "13/03/2021. Onze anos depois do primeiro beijo, no mesmíssimo dia e mês! 💍" },
 
   { t: "Onde foi nosso primeiro beijo?", tipo: "certa", c: 3,
-    o: ["No ginásio 249", "Na praça do Jardim Europa", "Na escola ROOSEVELT", "Na escada da 249 ❤️"],
+    o: ["No ginásio 249", "Na praça do Jardim Europa", "Na escola ROOSEVELT", "Na escada da 249"],
     msg: "Na escada da 249. Um cantinho qualquer que virou lugar de história! 🥰" },
 
   { t: "Qual foi nossa primeira viagem juntos de avião?", tipo: "certa", c: 1,
-    o: ["Maceió", "Jericoacoara / Fortaleza ❤️", "Porto de Galinhas", "Arraial do Cabo"],
+    o: ["Maceió", "Jericoacoara / Fortaleza", "Porto de Galinhas", "Arraial do Cabo"],
     msg: "Jericoacoara / Fortaleza. A primeira de muitas aventuras! ✈️" },
 
   { t: "Qual foi uma das nossas maiores aventuras juntos?", tipo: "certa", c: 1,
-    o: ["Nossa primeira viagem juntos de avião ✈️", "Um passeio de helicóptero 🚁 ❤️", "A conquista da nossa casa nova 🏡", "Uma viagem para Angra, na Casa da Rosa 😂"],
+    o: ["Nossa primeira viagem juntos de avião ✈️", "Um passeio de helicóptero 🚁", "A conquista da nossa casa nova 🏡", "Uma viagem para Angra, na Casa da Rosa 😂"],
     msg: "O passeio de helicóptero! Foi lá do alto que a gente viu o mundo pequenininho e o nosso amor gigante. 🚁❤️" },
 
   { t: "Qual das nossas viagens foi a mais inesquecível?", tipo: "livre",
@@ -44,11 +44,11 @@ const QUIZ = [
     msg: "Com a chegada da nossa Manu, nosso amor ganhou um novo significado. Deixamos de ser apenas dois sonhando com o futuro e nos tornamos uma família. O melhor presente que Deus poderia nos dar. ❤️" },
 
   { t: "Qual é o nosso maior sonho atualmente?", tipo: "certa", c: 3,
-    o: ["Conhecer vários países juntos ✈️", "Ver a Manu crescer e realizar seus sonhos 🎀", "Construir uma vida tranquila, com nossa família e nossa casa 🏡", "Conquistar tudo isso juntos! ❤️"],
+    o: ["Conhecer vários países juntos ✈️", "Ver a Manu crescer e realizar seus sonhos 🎀", "Construir uma vida tranquila, com nossa família e nossa casa 🏡", "Conquistar tudo isso juntos!"],
     msg: "Porque, no fim das contas, não importa quantos sonhos ainda temos para realizar. O que mais queremos é continuar realizando todos eles lado a lado." },
 
   { t: "Quem é o mais ciumento nessa relação?", tipo: "certa", c: 0,
-    o: ["Erica 🤭 ❤️", "Alisson", "Os dois, cada um do seu jeito", "Nenhum dos dois, somos a definição de tranquilidade 😂"],
+    o: ["Erica 🤭", "Alisson", "Os dois, cada um do seu jeito", "Nenhum dos dois, somos a definição de tranquilidade 😂"],
     msg: "Não precisava nem pensar muito, né? KKKKK. Quem ama, cuida… mas às vezes a Erica exagera um pouquinho! 🤣❤️" },
 
   { t: "Se pudéssemos reviver um dia da nossa história, qual seria?", tipo: "livre",
