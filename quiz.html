@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quiz — 16 anos da nossa história</title>
+<meta name="description" content="Um quiz sobre a nossa história. No final tem uma declaração para você ❤️">
+<meta name="theme-color" content="#120d0b">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>❤️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Playfair+Display:ital,wght@0,600;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="quiz.css">
+</head>
+<body>
+<div class="subindo" id="subindo" aria-hidden="true"></div>
+<div class="barra" aria-hidden="true"><span id="barra"></span></div>
+
+<main id="app">
+  <!-- capa -->
+  <section class="tela on" id="tela-capa">
+    <p class="mini">Quiz de aniversário</p>
+    <h1>16 anos da nossa história ❤️</h1>
+    <p class="sub">Quinze perguntas sobre nós. Responda com o coração.</p>
+    <button class="btn" id="comecar" type="button">Começar</button>
+  </section>
+
+  <!-- pergunta -->
+  <section class="tela" id="tela-pergunta" aria-live="polite">
+    <p class="mini" id="contagem"></p>
+    <h2 id="titulo"></h2>
+    <div class="opcoes" id="opcoes"></div>
+    <div class="retorno" id="retorno" hidden>
+      <p class="selo" id="selo"></p>
+      <p class="resultado" id="resultado"></p>
+      <p class="texto" id="texto"></p>
+      <p class="texto extra" id="extra"></p>
+      <button class="btn" id="proxima" type="button">Próxima</button>
+    </div>
+  </section>
+
+  <!-- transição -->
+  <section class="tela" id="tela-transicao">
+    <h2 id="tr-titulo"></h2>
+    <p class="sub" id="tr-msg"></p>
+    <p class="parabens" id="tr-parabens"></p>
+    <button class="btn" id="ver-declaracao" type="button">Abrir ❤️</button>
+  </section>
+</main>
+
+<!-- declaração final -->
+<article class="declaracao" id="declaracao" hidden>
+  <header class="dec-topo">
+    <h2 id="dec-titulo"></h2>
+    <p class="role">role devagar ↓</p>
+  </header>
+  <div class="dec-corpo" id="dec-corpo"></div>
+  <footer class="dec-fim"><p>❤️</p><p class="fim">FIM DO QUIZ</p><a href="index.html">Voltar para a nossa história</a></footer>
+</article>
+
+<script src="quiz-dados.js"></script>
+<script src="quiz.js"></script>
+</body>
+</html>
