@@ -429,3 +429,8 @@ img{display:block}
 .conq-verso.varias img.ativa{opacity:1}
 @media (prefers-reduced-motion:reduce){.celebrando{opacity:1!important;transform:none!important;animation:none!important}.te-amamos{animation:none}}
 .cel.largo{grid-column:span 2}
+
+/* botão para o quiz de aniversário */
+.quiz-link{display:inline-block;margin:2rem auto 0;padding:.9rem 2rem;border-radius:999px;font-weight:600;text-decoration:none;color:#2a1410;
+  background:linear-gradient(135deg,#ffb199,#ffd27a);box-shadow:0 8px 24px rgba(255,138,122,.35);transition:transform .15s}
+.quiz-link:hover{transform:translateY(-2px)}
