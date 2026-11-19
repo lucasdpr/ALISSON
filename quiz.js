@@ -43,6 +43,7 @@
     set("#titulo", q.t);
     $("#barra").style.width = (i / total) * 100 + "%";
     ret.hidden = true;
+    $("#proxima").hidden = false;
     elOpcoes.replaceChildren();
     q.o.forEach((txt, k) => {
       const b = document.createElement("button");
@@ -104,6 +105,9 @@
     subir(14);
   }
 
+  $("#voltar").addEventListener("click", () => {
+    if (i > 0) { i--; renderPergunta(); } else { mostrar("capa"); }
+  });
   $("#comecar").addEventListener("click", () => { i = 0; renderPergunta(); });
   $("#proxima").addEventListener("click", () => {
     $("#proxima").hidden = false;
