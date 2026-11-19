@@ -40,7 +40,7 @@ const QUIZ = [
     extra: "Talvez não exista uma viagem mais inesquecível que a outra. Cada uma marcou uma fase diferente da nossa vida. Fomos dois, depois três, e continuamos descobrindo novos caminhos para viver nossa história. Que Deus nos permita conhecer muitos outros lugares, sempre juntos!" },
 
   { t: "Qual foi o momento em que nossa família ganhou um novo sentido?", tipo: "certa", c: 2,
-    o: ["Quando decidimos nos casar 💍", "Quando compramos nossa primeira casa 🏡", "Com a chegada da Manu 🎀 ❤️", "Quando começamos a construir nossos sonhos juntos ❤️"],
+    o: ["Quando decidimos nos casar 💍", "Quando compramos nossa primeira casa 🏡", "Com a chegada da Manu 🎀", "Quando começamos a construir nossos sonhos juntos"],
     msg: "Com a chegada da nossa Manu, nosso amor ganhou um novo significado. Deixamos de ser apenas dois sonhando com o futuro e nos tornamos uma família. O melhor presente que Deus poderia nos dar. ❤️" },
 
   { t: "Qual é o nosso maior sonho atualmente?", tipo: "certa", c: 3,
@@ -56,7 +56,7 @@ const QUIZ = [
     msg: "Cada um desses dias tem um significado único. Se pudéssemos voltar no tempo, viveríamos tudo outra vez, porque cada momento nos trouxe até aqui. E ainda temos tanta história pela frente! ❤️" },
 
   { t: "O que não pode faltar na nossa vida, independentemente de onde estivermos?", tipo: "certa", c: 3,
-    o: ["Amor ❤️", "Nossa família 👨‍👩‍👧", "Deus 🙏", "Tudo isso junto! ❤️"],
+    o: ["Amor", "Nossa família 👨‍👩‍👧", "Deus 🙏", "Tudo isso junto!"],
     msg: "Porque aprendemos que não precisamos ter tudo perfeito para sermos felizes. Com Deus à frente, amor no coração e nossa família juntinha, temos o essencial para enfrentar qualquer caminho." },
 
   { t: "Qual é o símbolo que representa o início da nossa história?", tipo: "certa", c: 2,
