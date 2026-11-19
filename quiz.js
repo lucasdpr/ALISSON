@@ -110,10 +110,11 @@
     if (i > 0) { i--; renderPergunta(); } else { mostrar("capa"); }
   });
   $("#comecar").addEventListener("click", () => { i = 0; renderPergunta(); });
-  $("#proxima").addEventListener("click", () => {
-    $("#proxima").hidden = false;
+  const avancar = () => {
     if (i < total - 1) { i++; renderPergunta(); } else transicao();
-  });
+  };
+  $("#proxima").addEventListener("click", avancar);
+  $("#seguir").addEventListener("click", avancar);
 
   // ---------- transição e declaração ----------
   function transicao() {
