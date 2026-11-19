@@ -82,10 +82,11 @@
       return;
     }
     if (q.tipo === "livre") {
-      btns.forEach((b) => (b.disabled = true));
+      // sem resposta errada: pode trocar de escolha quantas vezes quiser
+      btns.forEach((b) => b.classList.remove("escolhida"));
       btns[k].classList.add("escolhida");
       mostrarRetorno({
-        selo: "Sem resposta errada ❤️", cls: "li",
+        selo: "Sem resposta errada ❤️ (pode trocar!)", cls: "li",
         texto: Array.isArray(q.msg) ? q.msg[k] : q.msg, extra: q.extra
       });
       subir(22);
