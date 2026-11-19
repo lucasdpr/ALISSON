@@ -82,3 +82,5 @@ h2{font-size:clamp(1.4rem,4.6vw,2rem)}
 .voltar{display:inline-block;background:none;border:0;color:var(--ink);opacity:.7;cursor:pointer;font-size:.95rem;padding:.4rem .2rem;margin-bottom:.6rem;text-decoration:none}
 .voltar:hover{opacity:1}
 #tela-pergunta .voltar{display:block;margin-right:auto}
+
+[hidden]{display:none!important}
