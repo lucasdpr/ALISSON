@@ -58,7 +58,7 @@ h2{font-size:clamp(1.4rem,4.6vw,2rem)}
 
 /* declaração */
 .declaracao{position:relative;z-index:5}
-.dec-topo{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem 16px}
+.dec-topo{position:relative;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem 16px}
 .dec-topo h2{font-size:clamp(1.9rem,7vw,3.6rem);max-width:14em;opacity:0;transform:translateY(20px);transition:1.4s ease}
 .dec-topo.on h2{opacity:1;transform:none}
 .role{position:absolute;bottom:2rem;font-size:.85rem;letter-spacing:.2em;opacity:.6;animation:flutua 2.4s ease-in-out infinite}
@@ -84,3 +84,8 @@ h2{font-size:clamp(1.4rem,4.6vw,2rem)}
 .nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem}
 
 [hidden]{display:none!important}
+
+.dec-fim .btn{display:inline-block;text-decoration:none;color:#2a1410;margin-top:.4rem}
+.dec-pilula{position:fixed;top:12px;right:12px;z-index:25;padding:.45rem .9rem;border-radius:999px;font-size:.85rem;font-weight:600;text-decoration:none;
+  color:var(--ink);background:rgba(18,13,11,.6);border:1px solid rgba(255,248,240,.3);backdrop-filter:blur(6px)}
+.dec-pilula:hover{background:rgba(18,13,11,.85)}
