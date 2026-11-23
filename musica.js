@@ -38,8 +38,11 @@
   const btn = document.createElement("button");
   btn.type = "button"; btn.className = "musica-btn"; btn.setAttribute("aria-label", "Música");
   document.body.append(btn);
+  function confirmado() {
+    try { return pronto && player.getPlayerState() === 1 && !player.isMuted(); } catch { return false; }
+  }
   function atualizar() {
-    const tocando = pronto && liberado && ligado() && !pausadoPorVideo;
+    const tocando = confirmado();
     btn.textContent = tocando ? "🎵" : "🔇";
     btn.classList.toggle("off", !tocando);
     btn.title = tocando ? "Pausar a música" : "Tocar a música";
@@ -63,11 +66,10 @@
         onReady: () => {
           pronto = true;
           player.setVolume(VOLUME);
-          // toca mudo logo de início (permitido) e liga o som no 1º toque
-          if (ligado() && !liberado) { player.mute(); player.playVideo(); }
           if (querPlay) aplicar();
           atualizar();
         },
+        onStateChange: () => atualizar(),
         onError: () => { btn.hidden = true; }   // vídeo sem permissão de incorporar etc.: some o botão, o site segue normal
       }
     });
@@ -83,15 +85,19 @@
   setInterval(salvar, 2000);
   addEventListener("pagehide", salvar);
 
-  // ---------- 1º toque libera o som ----------
+  // ---------- toques liberam o som (insiste a cada toque até realmente tocar com som) ----------
   function liberar() {
-    if (liberado) return;
     liberado = true;
     if (ss.get("m_on") === null) ss.set("m_on", "1");
     querPlay = true;
     aplicar();
-    removeEventListener("pointerdown", liberar, true);
-    removeEventListener("keydown", liberar, true);
+    setTimeout(() => {
+      atualizar();
+      if (confirmado()) {
+        removeEventListener("pointerdown", liberar, true);
+        removeEventListener("keydown", liberar, true);
+      }
+    }, 1200);
   }
   addEventListener("pointerdown", liberar, true);
   addEventListener("keydown", liberar, true);
@@ -102,11 +108,13 @@
     setTimeout(() => splash.remove(), 700);
     liberarAbertura();
   });
+  setInterval(atualizar, 1000);
 
   // ---------- botão liga/desliga ----------
   btn.addEventListener("click", (e) => {
     e.stopPropagation();
-    ss.set("m_on", ligado() ? "0" : "1");
+    if (confirmado()) ss.set("m_on", "0");      // está tocando: pausa
+    else ss.set("m_on", "1");                    // mudo/parada: liga com som
     liberado = true; querPlay = true;
     aplicar();
   });
