@@ -20,7 +20,7 @@ if (typeof FRASE_FINAL !== "undefined") $("#frase-final").textContent = FRASE_FI
 const temCelebra = typeof FRASE_INICIAL !== "undefined" && FRASE_INICIAL;
 if (temCelebra) { $("#celebrando").textContent = FRASE_INICIAL; requestAnimationFrame(() => $("#celebrando").classList.add("on")); }
 if (typeof DESPEDIDA !== "undefined") DESPEDIDA.forEach((t, i) => $("#despedida").append(el("p", i ? "te-amamos" : "familinha", t)));
-new Promise((ok) => setTimeout(ok, temCelebra && !calmo ? 1700 : 0)).then(() =>
+Promise.resolve(window.aberturaLiberada).then(() => new Promise((ok) => setTimeout(ok, temCelebra && !calmo ? 1700 : 0))).then(() =>
 digitar($("#maquina"), primeiroAno ? `Em ${primeiroAno}, começou a história de…` : "Esta é a história de…")).then(() => {
   $("#nome").classList.add("on");
   setTimeout(() => $("#casal").classList.add("on"), 700);

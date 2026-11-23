@@ -434,3 +434,15 @@ img{display:block}
 .quiz-link{display:inline-block;margin:2rem auto 0;padding:.9rem 2rem;border-radius:999px;font-weight:600;text-decoration:none;color:#2a1410;
   background:linear-gradient(135deg,#ffb199,#ffd27a);box-shadow:0 8px 24px rgba(255,138,122,.35);transition:transform .15s}
 .quiz-link:hover{transform:translateY(-2px)}
+
+/* música de fundo + tela "toque para abrir" */
+.musica-btn{position:fixed;top:14px;left:14px;z-index:40;width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.3);cursor:pointer;
+  background:rgba(20,14,12,.65);color:var(--ink);font-size:1.1rem;backdrop-filter:blur(6px);display:grid;place-items:center;padding:0}
+.musica-btn.off{opacity:.7}
+.musica-btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.splash{position:fixed;inset:0;z-index:100;border:0;cursor:pointer;color:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;
+  background:radial-gradient(ellipse at 50% 0%,#3a1a1c 0%,#1a0f0e 55%,#120d0b 100%);transition:opacity .7s ease}
+.splash.some{opacity:0;pointer-events:none}
+.splash-i{font-size:4rem;animation:flutua 2.4s ease-in-out infinite}
+.splash-t{font:600 clamp(1.6rem,6vw,2.4rem) "Playfair Display",serif}
+.splash small{font:500 1.2rem Caveat,cursive;color:var(--accent)}
